@@ -1,3 +1,5 @@
+import mongodb from "mongodb";
+
 export const createApplication = async (req, res) => {
    const applications = req.db.collection("applications");
    const { company, role, submittedAt, url, notes } = req.body;
@@ -19,7 +21,7 @@ export const createApplication = async (req, res) => {
       const newApp = await applications.insertOne(newApplication);
 
       res.status(201).json({
-         id: newApp.id,
+         id: newApp.insertedId,
          message: "Application created successfully!",
          ...newApplication,
       });

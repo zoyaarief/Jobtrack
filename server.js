@@ -1,14 +1,15 @@
-import express from "express"
-import authRoutes from "authRoutes"
-import dotenv from "dotenv"
-import { MongoClient } from "mongodb"
+import express from "express";
+import authRoutes from "./routes/authRoutes.js";
+import applicationRoutes from "./routes/applicationRoutes.js";
+import dotenv from "dotenv";
+import { MongoClient } from "mongodb";
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
-app.use(express.static("./frontend/dist"))
-app.use(express.urlencoded({extended: true}))
+app.use(express.static("./frontend/dist"));
+app.use(express.urlencoded({ extended: true }));
 
 // mongodb setup
 const MONGO_URI = process.env.MONGO_URI;
@@ -19,13 +20,13 @@ console.log("Mongodb connected!");
 
 // attach db to every req
 app.use((req, res, next) => {
-    req.db = db;
-    next();
-})
+   req.db = db;
+   next();
+});
 
 app.use("/api/auth", authRoutes);
-
+app.use("/api/applications", applicationRoutes);
 
 app.listen(3000, () => {
-    console.log("Server is running on port 3000");
-})
+   console.log("Server is running on port 3000");
+});
