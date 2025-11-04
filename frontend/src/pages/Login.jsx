@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Card, Form, Button, Alert } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { api } from "../api.js";
 
-export default function Login() {
+export default function Login({ onLogin }) {
+   const navigate = useNavigate();
    const [identifer, setIdentifer] = useState("");
    const [password, setPassword] = useState("");
    const [loading, setLoading] = useState(false);
@@ -13,30 +15,11 @@ export default function Login() {
       setError("");
       setLoading(true);
       try {
-         const response = await fetch("/api/auth/login", {
-            method: "POST",
-            headers: {
-               "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ identifer, password }),
-         });
-
-         const contentType = response.headers.get("content-type") || "";
-         const isJson = contentType.includes("application/json");
-         const data = isJson ? await response.json().catch(() => null) : null;
-
-         if (!response.ok) {
-            const message =
-               (data && (data.message || data.error)) ||
-               `Request failed (${response.status})`;
-            throw new Error(message);
-         }
-
-         const token = data?.token;
+         const res = await api.login({ identifer, password });
+         const token = res.token;
          if (token) {
-            // store token in local storage
-            localStorage.setItem("token", token);
-            // redirect to dashboard here
+            onLogin(token);
+            navigate("/dashboard", { replace: true });
          } else {
             setError("No token returned from server");
          }

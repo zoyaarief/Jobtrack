@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Card, Form, Button, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import { api } from "../api.js";
 
 export default function Register() {
    const navigate = useNavigate();
@@ -25,27 +26,8 @@ export default function Register() {
       setSuccess("");
       setLoading(true);
       try {
-         const response = await fetch("/api/auth/register", {
-            method: "POST",
-            headers: {
-               "Content-Type": "application/json",
-            },
-            body: JSON.stringify(form),
-         });
-
-         const contentType = response.headers.get("content-type") || "";
-         const isJson = contentType.includes("application/json");
-         const data = isJson ? await response.json().catch(() => null) : null;
-
-         if (!response.ok) {
-            const message =
-               (data && (data.message || data.error)) ||
-               `Request failed (${response.status})`;
-            throw new Error(message);
-         }
-
+         await api.register(form);
          setSuccess("Account created. You can log in now.");
-         // redirect to login page now
          setTimeout(() => navigate("/login"), 600);
       } catch (err) {
          setError(err.message || "Registration failed");
