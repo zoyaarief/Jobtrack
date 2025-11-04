@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Topbar from "./components/Navbar.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
 
 export default function App() {
    const [token, setToken] = useState(
@@ -20,7 +21,8 @@ export default function App() {
          <Routes>
             <Route path='/login' element={<Login onLogin={handleLogin} />} />
             <Route path='/register' element={<Register />} />
-            <Route path='/' element={<Navigate to='/login' replace />} />
+            <Route path='/dashboard' element={<Dashboard token={token} />} />
+            <Route path='/' element={<Navigate to='/dashboard' replace />} />
          </Routes>
          <footer className='mt-auto py-4 text-center text-secondary small'>
             <div className='container'>
