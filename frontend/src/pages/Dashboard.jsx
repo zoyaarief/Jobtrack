@@ -185,6 +185,75 @@ export default function Dashboard({ token }) {
                )}
             </Card.Body>
          </Card>
+
+         <Modal show={showCreate} onHide={() => setShowCreate(false)} centered>
+            <Form onSubmit={handleCreate}>
+               <Modal.Header closeButton>
+                  <Modal.Title>New application</Modal.Title>
+               </Modal.Header>
+               <Modal.Body className='vstack gap-3'>
+                  {error && (
+                     <div className='alert alert-danger' role='alert'>
+                        {error}
+                     </div>
+                  )}
+                  <Form.Group>
+                     <Form.Label>Company</Form.Label>
+                     <Form.Control
+                        value={form.company}
+                        onChange={(e) => updateField("company", e.target.value)}
+                        required
+                     />
+                  </Form.Group>
+                  <Form.Group>
+                     <Form.Label>Role</Form.Label>
+                     <Form.Control
+                        value={form.role}
+                        onChange={(e) => updateField("role", e.target.value)}
+                     />
+                  </Form.Group>
+                  <Form.Group>
+                     <Form.Label>Submitted date</Form.Label>
+                     <Form.Control
+                        type='date'
+                        value={form.submittedAt}
+                        onChange={(e) =>
+                           updateField("submittedAt", e.target.value)
+                        }
+                     />
+                  </Form.Group>
+                  <Form.Group>
+                     <Form.Label>Link</Form.Label>
+                     <Form.Control
+                        type='url'
+                        value={form.url}
+                        onChange={(e) => updateField("url", e.target.value)}
+                        placeholder='https://...'
+                     />
+                  </Form.Group>
+                  <Form.Group>
+                     <Form.Label>Notes</Form.Label>
+                     <Form.Control
+                        as='textarea'
+                        rows={3}
+                        value={form.notes}
+                        onChange={(e) => updateField("notes", e.target.value)}
+                     />
+                  </Form.Group>
+               </Modal.Body>
+               <Modal.Footer>
+                  <Button
+                     variant='secondary'
+                     onClick={() => setShowCreate(false)}
+                  >
+                     Cancel
+                  </Button>
+                  <Button type='submit' disabled={saving}>
+                     {saving ? "Saving..." : "Create"}
+                  </Button>
+               </Modal.Footer>
+            </Form>
+         </Modal>
       </div>
    );
 }
