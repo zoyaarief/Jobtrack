@@ -4,6 +4,7 @@ import Topbar from "./components/Navbar.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
+import ApplicationDetail from "./pages/ApplicationDetail.jsx";
 
 function RequireAuth({ authed, children }) {
    const location = useLocation();
@@ -54,15 +55,24 @@ export default function App() {
                }
             />
             <Route
+               path='/applications/:id'
+               element={
+                  <RequireAuth authed={isAuthed}>
+                     <ApplicationDetail token={token} />
+                  </RequireAuth>
+               }
+            />
+            <Route
                path='/'
                element={
                   isAuthed ? (
                      <Navigate to='/dashboard' replace />
                   ) : (
-                     <Navigate to='/login ' replace />
+                     <Navigate to='/login' replace />
                   )
                }
             />
+            <Route path='*' element={<Navigate to='/' replace />} />
          </Routes>
          <footer className='mt-auto py-4 text-center text-secondary small'>
             <div className='container'>
