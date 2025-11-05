@@ -30,19 +30,20 @@ export default function Dashboard({ token }) {
    const [saving, setSaving] = useState(false);
    const [showCreate, setShowCreate] = useState(false);
 
-   useEffect(() => {
-      async function refresh() {
-         setError("");
-         setLoading(true);
-         try {
-            const list = await api.applications.list(token);
-            setApps(list || []);
-         } catch (err) {
-            setError(err.message || "Failed to load applications");
-         } finally {
-            setLoading(false);
-         }
+   async function refresh() {
+      setError("");
+      setLoading(true);
+      try {
+         const list = await api.applications.list(token);
+         setApps(list || []);
+      } catch (err) {
+         setError(err.message || "Failed to load applications");
+      } finally {
+         setLoading(false);
       }
+   }
+
+   useEffect(() => {
       refresh();
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [token]);
