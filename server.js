@@ -20,13 +20,13 @@ console.log("Mongodb connected!");
 
 // attach db to every req
 app.use((req, res, next) => {
-   req.db = db;
-   next();
+  req.db = db;
+  next();
 });
 
 app.use("/api/auth", authRoutes);
 app.use("/api/applications", applicationRoutes);
 
 app.listen(3000, () => {
-   console.log("Server is running on port 3000");
+  console.log("Server is running on port 3000");
 });

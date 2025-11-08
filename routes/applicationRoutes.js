@@ -1,11 +1,11 @@
 import express from "express";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
 import {
-   createApplication,
-   getAllApplications,
-   getApplication,
-   updateApplication,
-   deleteApplication,
+  createApplication,
+  getAllApplications,
+  getApplication,
+  updateApplication,
+  deleteApplication,
 } from "../controllers/applicationsController.js";
 
 const router = express.Router();
