@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Card, Form, Button, Table, Badge, Modal } from "react-bootstrap";
 import { FiExternalLink, FiPlus, FiTrash2, FiEye } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 import { api } from "../api.js";
 
 function formatDate(value) {
@@ -239,7 +240,11 @@ export default function Dashboard({ token }) {
             </Button>
           </Modal.Footer>
         </Form>
-      </Modal>
-    </div>
-  );
+         </Modal>
+      </div>
+   );
 }
+
+Dashboard.propTypes = {
+   token: PropTypes.string.isRequired,
+};

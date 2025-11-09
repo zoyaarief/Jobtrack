@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Card, Form, Button, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 import { api } from "../api.js";
 
 export default function Login({ onLogin }) {
@@ -68,7 +69,11 @@ export default function Login({ onLogin }) {
             </Card.Body>
           </Card>
         </div>
+         </div>
       </div>
-    </div>
-  );
+   );
 }
+
+Login.propTypes = {
+   onLogin: PropTypes.func.isRequired,
+};

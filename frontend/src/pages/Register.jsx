@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Card, Form, Button, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 import { api } from "../api.js";
 
 export default function Register() {
@@ -100,7 +101,9 @@ export default function Register() {
             </Card.Body>
           </Card>
         </div>
+         </div>
       </div>
-    </div>
-  );
+   );
 }
+
+Register.propTypes = {};

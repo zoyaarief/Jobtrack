@@ -1,6 +1,7 @@
 import { Navbar, Container, Nav, Button } from "react-bootstrap";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { FiBriefcase, FiLogOut } from "react-icons/fi";
+import PropTypes from "prop-types";
 
 export default function Topbar({ user, onLogout }) {
   const location = useLocation();
@@ -66,3 +67,12 @@ export default function Topbar({ user, onLogout }) {
     </Navbar>
   );
 }
+
+Topbar.propTypes = {
+  user: PropTypes.shape({
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+    username: PropTypes.string,
+  }),
+  onLogout: PropTypes.func.isRequired,
+};

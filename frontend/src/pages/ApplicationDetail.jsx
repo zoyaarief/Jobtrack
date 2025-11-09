@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Card, Form, Button, Row, Col, Alert } from "react-bootstrap";
 import { FiSave, FiTrash2 } from "react-icons/fi";
+import PropTypes from "prop-types";
 import { api } from "../api.js";
 
 export default function ApplicationDetail({ token }) {
@@ -185,7 +186,11 @@ export default function ApplicationDetail({ token }) {
             </Form.Group>
           </Form>
         </Card.Body>
-      </Card>
-    </div>
-  );
+         </Card>
+      </div>
+   );
 }
+
+ApplicationDetail.propTypes = {
+   token: PropTypes.string.isRequired,
+};
