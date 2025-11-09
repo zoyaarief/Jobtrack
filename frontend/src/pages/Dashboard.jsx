@@ -1,9 +1,16 @@
 import { useEffect, useState } from "react";
 import { Card, Form, Button, Table, Badge, Modal } from "react-bootstrap";
-import { FiExternalLink, FiPlus, FiTrash2, FiEye } from "react-icons/fi";
+import {
+  FiExternalLink,
+  FiPlus,
+  FiTrash2,
+  FiEye,
+  FiBriefcase,
+} from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { api } from "../api.js";
+import "../css/Dashboard.css";
 
 function formatDate(value) {
   try {
@@ -92,81 +99,237 @@ export default function Dashboard({ token }) {
   }
 
   const total = apps.length;
+  const appliedCount = apps.filter(
+    (a) => a.status === "applied" || !a.status,
+  ).length;
+  const interviewCount = apps.filter((a) => a.status === "interview").length;
+  const rejectedCount = apps.filter((a) => a.status === "rejected").length;
 
   return (
     <div className="container py-4 py-md-5">
-      <div className="d-flex align-items-end justify-content-between flex-wrap gap-2 mb-3">
+      {/* Header Section */}
+      <div className="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-4">
         <div>
-          <h1 className="h4 mb-1">Applications</h1>
-          <div className="text-secondary small">
-            Track and manage your job search
-          </div>
-        </div>
-        <div>
-          <Button
-            onClick={() => setShowCreate(true)}
-            className="d-inline-flex align-items-center gap-2"
+          <h1
+            className="h3 mb-2 fw-bold"
+            style={{ color: "var(--text-primary)" }}
           >
-            <FiPlus /> New application
-          </Button>
+            Job Applications Dashboard
+          </h1>
+          <p className="text-secondary mb-0">
+            Track and manage your job search progress
+          </p>
         </div>
+        <Button
+          onClick={() => setShowCreate(true)}
+          className="btn-modern btn-primary-modern d-inline-flex align-items-center gap-2"
+          style={{ fontSize: "1rem", padding: "0.75rem 1.5rem" }}
+        >
+          <FiPlus style={{ fontSize: "1.1rem" }} />
+          Add Application
+        </Button>
       </div>
 
-      <Card className="border-0 shadow-sm">
+      {/* Stats Cards */}
+      {total > 0 && (
+        <div className="row g-3 mb-4">
+          <div className="col-12 col-sm-6 col-lg-3">
+            <Card className="card-modern h-100">
+              <Card.Body className="text-center p-3">
+                <div className="stats-icon info">
+                  <FiBriefcase />
+                </div>
+                <h3
+                  className="h4 mb-1 fw-bold"
+                  style={{ color: "var(--text-dark)" }}
+                >
+                  {total}
+                </h3>
+                <p className="text-secondary small mb-0">Total Applications</p>
+              </Card.Body>
+            </Card>
+          </div>
+          <div className="col-12 col-sm-6 col-lg-3">
+            <Card className="card-modern h-100">
+              <Card.Body className="text-center p-3">
+                <div className="stats-icon success">
+                  <span>✓</span>
+                </div>
+                <h3
+                  className="h4 mb-1 fw-bold"
+                  style={{ color: "var(--text-dark)" }}
+                >
+                  {appliedCount}
+                </h3>
+                <p className="text-secondary small mb-0">Applied</p>
+              </Card.Body>
+            </Card>
+          </div>
+          <div className="col-12 col-sm-6 col-lg-3">
+            <Card className="card-modern h-100">
+              <Card.Body className="text-center p-3">
+                <div className="stats-icon warning">
+                  <span>🎯</span>
+                </div>
+                <h3
+                  className="h4 mb-1 fw-bold"
+                  style={{ color: "var(--text-dark)" }}
+                >
+                  {interviewCount}
+                </h3>
+                <p className="text-secondary small mb-0">Interviews</p>
+              </Card.Body>
+            </Card>
+          </div>
+          <div className="col-12 col-sm-6 col-lg-3">
+            <Card className="card-modern h-100">
+              <Card.Body className="text-center p-3">
+                <div className="stats-icon danger">
+                  <span>✗</span>
+                </div>
+                <h3
+                  className="h4 mb-1 fw-bold"
+                  style={{ color: "var(--text-dark)" }}
+                >
+                  {rejectedCount}
+                </h3>
+                <p className="text-secondary small mb-0">Rejected</p>
+              </Card.Body>
+            </Card>
+          </div>
+        </div>
+      )}
+
+      {/* Applications Table */}
+      <Card className="card-modern">
         <Card.Body className="p-0">
           {loading ? (
-            <div className="p-4 text-center text-secondary">Loading…</div>
+            <div className="p-5 text-center">
+              <div className="spinner-border text-primary mb-3" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+              <p className="text-secondary mb-0">
+                Loading your applications...
+              </p>
+            </div>
           ) : total === 0 ? (
-            <div className="p-4 text-center text-secondary">
-              No applications yet.
+            <div className="p-5 text-center">
+              <div className="d-flex align-items-center justify-content-center mb-3">
+                <div
+                  className="rounded-circle d-flex align-items-center justify-content-center"
+                  style={{
+                    width: "80px",
+                    height: "80px",
+                    background: "var(--bg-tertiary)",
+                    color: "var(--text-muted)",
+                  }}
+                >
+                  <FiBriefcase style={{ fontSize: "2.5rem" }} />
+                </div>
+              </div>
+              <h4 className="text-secondary mb-2">No applications yet</h4>
+              <p className="text-muted mb-4">
+                Start tracking your job search by adding your first application
+              </p>
+              <Button
+                onClick={() => setShowCreate(true)}
+                className="btn-modern btn-primary-modern"
+              >
+                <FiPlus className="me-2" />
+                Add Your First Application
+              </Button>
             </div>
           ) : (
             <div className="table-responsive">
-              <Table hover responsive className="mb-0 align-middle">
-                <thead className="table-light">
+              <Table className="table-modern mb-0">
+                <thead>
                   <tr>
                     <th>Company</th>
                     <th>Role</th>
                     <th>Status</th>
                     <th>Submitted</th>
-                    <th></th>
+                    <th>Notes</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {apps.map((a) => (
-                    <tr key={a._id}>
-                      <td className="fw-medium">{a.company || "unknown"}</td>
-                      <td>{a.role || ""}</td>
+                    <tr key={a._id} className="table-row-hover">
                       <td>
-                        <Badge bg="light" text="dark" className="border">
-                          {a.status || "applied"}
+                        <div className="d-flex align-items-center">
+                          <div className="company-avatar me-2">
+                            {(a.company || "U")[0].toUpperCase()}
+                          </div>
+                          <span className="fw-medium">
+                            {a.company || "Unknown"}
+                          </span>
+                        </div>
+                      </td>
+                      <td>{a.role || "Not specified"}</td>
+                      <td>
+                        <Badge
+                          bg={
+                            a.status === "interview"
+                              ? "warning"
+                              : a.status === "rejected"
+                                ? "danger"
+                                : a.status === "offer"
+                                  ? "info"
+                                  : a.status === "applied" || !a.status
+                                    ? "success"
+                                    : "secondary"
+                          }
+                          text="white"
+                        >
+                          {a.status === "interview"
+                            ? "Interview"
+                            : a.status === "rejected"
+                              ? "Rejected"
+                              : a.status === "offer"
+                                ? "Offer"
+                                : a.status === "applied" || !a.status
+                                  ? "Applied"
+                                  : "Pending"}
                         </Badge>
                       </td>
                       <td>{formatDate(a.submittedAt)}</td>
-                      <td className="text-end">
+                      <td>
+                        <span className="text-muted small">
+                          {a.notes
+                            ? a.notes.length > 30
+                              ? `${a.notes.substring(0, 30)}...`
+                              : a.notes
+                            : "No notes"}
+                        </span>
+                      </td>
+                      <td>
                         <div className="btn-group btn-group-sm">
                           {a.url && (
-                            <a
-                              className="btn btn-outline-secondary d-inline-flex align-items-center gap-1"
+                            <Button
+                              as="a"
                               href={a.url}
                               target="_blank"
                               rel="noreferrer"
+                              size="sm"
+                              variant="outline-secondary"
                             >
                               <FiExternalLink /> Open
-                            </a>
+                            </Button>
                           )}
-                          <button
-                            className="btn btn-outline-secondary d-inline-flex align-items-center gap-1"
+                          <Button
+                            size="sm"
+                            variant="outline-secondary"
                             onClick={() => navigate(`/applications/${a._id}`)}
                           >
                             <FiEye /> View
-                          </button>
-                          <button
-                            className="btn btn-outline-danger d-inline-flex align-items-center gap-1"
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline-danger"
                             onClick={() => handleDelete(a._id)}
                           >
                             <FiTrash2 /> Delete
-                          </button>
+                          </Button>
                         </div>
                       </td>
                     </tr>
@@ -178,73 +341,91 @@ export default function Dashboard({ token }) {
         </Card.Body>
       </Card>
 
-      <Modal show={showCreate} onHide={() => setShowCreate(false)} centered>
+      <Modal
+        show={showCreate}
+        onHide={() => setShowCreate(false)}
+        centered
+        size="lg"
+      >
         <Form onSubmit={handleCreate}>
           <Modal.Header closeButton>
-            <Modal.Title>New application</Modal.Title>
-          </Modal.Header>
-          <Modal.Body className="vstack gap-3">
-            {error && (
-              <div className="alert alert-danger" role="alert">
-                {error}
+            <Modal.Title className="d-flex align-items-center gap-2 fw-bold">
+              <div className="add-app-icon">
+                <FiPlus />
               </div>
-            )}
-            <Form.Group>
-              <Form.Label>Company</Form.Label>
-              <Form.Control
-                value={form.company}
-                onChange={(e) => updateField("company", e.target.value)}
-                required
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Role</Form.Label>
-              <Form.Control
-                value={form.role}
-                onChange={(e) => updateField("role", e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Submitted date</Form.Label>
-              <Form.Control
-                type="date"
-                value={form.submittedAt}
-                onChange={(e) => updateField("submittedAt", e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Link</Form.Label>
-              <Form.Control
-                type="url"
-                value={form.url}
-                onChange={(e) => updateField("url", e.target.value)}
-                placeholder="https://..."
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Notes</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                value={form.notes}
-                onChange={(e) => updateField("notes", e.target.value)}
-              />
-            </Form.Group>
+              Add New Application
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {error && <Alert variant="danger">{error}</Alert>}
+            <div className="row">
+              <div className="col-md-6 mb-3">
+                <Form.Label>Company *</Form.Label>
+                <Form.Control
+                  value={form.company}
+                  onChange={(e) => updateField("company", e.target.value)}
+                  placeholder="e.g. Google, Microsoft"
+                  required
+                />
+              </div>
+              <div className="col-md-6 mb-3">
+                <Form.Label>Job Role</Form.Label>
+                <Form.Control
+                  value={form.role}
+                  onChange={(e) => updateField("role", e.target.value)}
+                  placeholder="e.g. Software Engineer"
+                />
+              </div>
+              <div className="col-md-6 mb-3">
+                <Form.Label>Application Date</Form.Label>
+                <Form.Control
+                  type="date"
+                  value={form.submittedAt}
+                  onChange={(e) => updateField("submittedAt", e.target.value)}
+                />
+              </div>
+              <div className="col-md-6 mb-3">
+                <Form.Label>Job Posting Link</Form.Label>
+                <Form.Control
+                  type="url"
+                  value={form.url}
+                  onChange={(e) => updateField("url", e.target.value)}
+                  placeholder="https://company.com/careers/job-123"
+                />
+              </div>
+              <div className="col-12 mb-3">
+                <Form.Label>Notes</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows={3}
+                  value={form.notes}
+                  onChange={(e) => updateField("notes", e.target.value)}
+                  placeholder="Any additional notes about this application..."
+                />
+              </div>
+            </div>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={() => setShowCreate(false)}>
+            <Button
+              variant="outline-secondary"
+              onClick={() => setShowCreate(false)}
+            >
               Cancel
             </Button>
-            <Button type="submit" disabled={saving}>
-              {saving ? "Saving..." : "Create"}
+            <Button
+              type="submit"
+              className="btn-modern btn-primary-modern"
+              disabled={saving}
+            >
+              {saving ? "Creating..." : "Add Application"}
             </Button>
           </Modal.Footer>
         </Form>
-         </Modal>
-      </div>
-   );
+      </Modal>
+    </div>
+  );
 }
 
 Dashboard.propTypes = {
-   token: PropTypes.string.isRequired,
+  token: PropTypes.string.isRequired,
 };

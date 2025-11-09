@@ -50,55 +50,75 @@ export default function App() {
   }
 
   return (
-    <div className="d-flex flex-column min-vh-100">
+    <div
+      className="d-flex flex-column min-vh-100"
+      style={{
+        background: `
+        radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.05), transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(244, 114, 182, 0.05), transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(34, 211, 238, 0.05), transparent 50%)
+      `,
+        backgroundColor: "var(--bg-light)",
+      }}
+    >
       <Topbar user={user} onLogout={handleLogout} />
-      <Routes>
-        <Route
-          path="/login"
-          element={
-            isAuthed ? (
-              <Navigate to="/dashboard" replace />
-            ) : (
-              <Login onLogin={handleLogin} />
-            )
-          }
-        />
-        <Route
-          path="/register"
-          element={
-            isAuthed ? <Navigate to="/dashboard" replace /> : <Register />
-          }
-        />
-        <Route
-          path="/dashboard"
-          element={
-            <RequireAuth authed={isAuthed}>
-              <Dashboard token={token} />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/applications/:id"
-          element={
-            <RequireAuth authed={isAuthed}>
-              <ApplicationDetail token={token} />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/"
-          element={
-            isAuthed ? (
-              <Navigate to="/dashboard" replace />
-            ) : (
-              <Navigate to="/login" replace />
-            )
-          }
-        />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-      <footer className="mt-auto py-4 text-center text-secondary small">
-        <div className="container">© {new Date().getFullYear()} JobTrack</div>
+      <main className="flex-grow-1">
+        <Routes>
+          <Route
+            path="/login"
+            element={
+              isAuthed ? (
+                <Navigate to="/dashboard" replace />
+              ) : (
+                <Login onLogin={handleLogin} />
+              )
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              isAuthed ? <Navigate to="/dashboard" replace /> : <Register />
+            }
+          />
+          <Route
+            path="/dashboard"
+            element={
+              <RequireAuth authed={isAuthed}>
+                <Dashboard token={token} />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/applications/:id"
+            element={
+              <RequireAuth authed={isAuthed}>
+                <ApplicationDetail token={token} />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/"
+            element={
+              isAuthed ? (
+                <Navigate to="/dashboard" replace />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </main>
+      <footer className="mt-auto py-4 text-center bg-light border-top">
+        <div className="container">
+          <div className="d-flex align-items-center justify-content-center gap-2 mb-2">
+            <span className="navbar-brand-modern">JobTrack</span>
+          </div>
+          <p className="text-muted small mb-0">
+            © {new Date().getFullYear()} JobTrack - Professional Job
+            Application Tracker
+          </p>
+        </div>
       </footer>
     </div>
   );

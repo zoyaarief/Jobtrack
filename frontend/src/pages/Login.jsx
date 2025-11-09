@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Card, Form, Button, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import { FiMail, FiLock, FiBriefcase } from "react-icons/fi";
 import PropTypes from "prop-types";
 import { api } from "../api.js";
+import "../css/Login.css";
 
 export default function Login({ onLogin }) {
   const navigate = useNavigate();
@@ -34,13 +36,22 @@ export default function Login({ onLogin }) {
   return (
     <div className="container py-5">
       <div className="row justify-content-center">
-        <div className="col-12 col-sm-10 col-md-7 col-lg-5">
-          <Card className="shadow-sm border-0">
-            <Card.Body className="p-4 p-md-5">
-              <h1 className="h4 mb-4 text-center">Welcome back</h1>
+        <div className="col-md-6">
+          <div className="text-center mb-4">
+            <div className="login-hero">
+              <FiBriefcase />
+            </div>
+            <h1 className="login-title">Welcome back</h1>
+            <p className="login-subtitle">
+              Sign in to continue tracking your applications
+            </p>
+          </div>
+
+          <Card className="card-modern">
+            <Card.Body className="p-4">
               {error && <Alert variant="danger">{error}</Alert>}
-              <Form onSubmit={handleSubmit} className="vstack gap-3">
-                <Form.Group>
+              <Form onSubmit={handleSubmit} className="form-modern">
+                <Form.Group className="mb-3">
                   <Form.Label>Email or Username</Form.Label>
                   <Form.Control
                     type="text"
@@ -50,7 +61,7 @@ export default function Login({ onLogin }) {
                     required
                   />
                 </Form.Group>
-                <Form.Group>
+                <Form.Group className="mb-3">
                   <Form.Label>Password</Form.Label>
                   <Form.Control
                     type="password"
@@ -59,21 +70,25 @@ export default function Login({ onLogin }) {
                     required
                   />
                 </Form.Group>
-                <Button type="submit" className="w-100" disabled={loading}>
+                <Button
+                  type="submit"
+                  className="btn-modern btn-primary-modern w-100"
+                  disabled={loading}
+                >
                   {loading ? "Signing in…" : "Sign in"}
                 </Button>
               </Form>
-              <p className="text-center text-secondary small mt-3 mb-0">
+              <p className="text-center mt-3 mb-0">
                 New here? <Link to="/register">Create an account</Link>
               </p>
             </Card.Body>
           </Card>
         </div>
-         </div>
       </div>
-   );
+    </div>
+  );
 }
 
 Login.propTypes = {
-   onLogin: PropTypes.func.isRequired,
+  onLogin: PropTypes.func.isRequired,
 };

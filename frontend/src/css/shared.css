@@ -1,0 +1,112 @@
+/* Shared Component Styles */
+
+/* Modern Card Styles */
+.card-modern {
+  background: var(--bg-white);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s ease;
+}
+
+.card-modern:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.card-modern .card-header {
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--secondary-color)
+  );
+  color: white;
+  border: none;
+  padding: 1rem;
+  font-weight: 600;
+}
+
+/* Modern Button Styles */
+.btn-modern {
+  border-radius: 6px;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.btn-primary-modern {
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--secondary-color)
+  );
+  color: white;
+}
+
+.btn-primary-modern:hover {
+  background: linear-gradient(
+    135deg,
+    var(--secondary-color),
+    var(--primary-color)
+  );
+  transform: translateY(-1px);
+}
+
+.btn-secondary-modern {
+  background: linear-gradient(135deg, #f093fb, #f5576c);
+  color: white;
+}
+
+.btn-success-modern {
+  background: linear-gradient(135deg, #48bb78, #38a169);
+  color: white;
+}
+
+/* Form Styles */
+.form-modern .form-control {
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  transition: border-color 0.2s ease;
+}
+
+.form-modern .form-control:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+}
+
+.form-modern .form-label {
+  font-weight: 500;
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+}
+
+/* Status Badges */
+.badge-modern {
+  border-radius: 4px;
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.badge-applied {
+  background: linear-gradient(135deg, var(--success-color), #38a169);
+  color: white;
+}
+
+.badge-interview {
+  background: linear-gradient(135deg, var(--warning-color), #dd6b20);
+  color: white;
+}
+
+.badge-rejected {
+  background: linear-gradient(135deg, var(--danger-color), #e53e3e);
+  color: white;
+}
+
+.badge-pending {
+  background: linear-gradient(135deg, var(--info-color), #3182ce);
+  color: white;
+}

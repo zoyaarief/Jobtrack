@@ -1,0 +1,24 @@
+/* Register Page Styles */
+.register-hero {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #f093fb, #f5576c);
+  color: white;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+}
+
+.register-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+}
+
+.register-subtitle {
+  color: var(--text-gray);
+  margin-bottom: 0;
+}

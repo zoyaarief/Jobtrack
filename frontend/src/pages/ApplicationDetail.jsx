@@ -4,6 +4,7 @@ import { Card, Form, Button, Row, Col, Alert } from "react-bootstrap";
 import { FiSave, FiTrash2 } from "react-icons/fi";
 import PropTypes from "prop-types";
 import { api } from "../api.js";
+import "../css/ApplicationDetail.css";
 
 export default function ApplicationDetail({ token }) {
   const { id } = useParams();
@@ -60,7 +61,6 @@ export default function ApplicationDetail({ token }) {
         url: app.url || undefined,
         notes: app.notes || undefined,
       };
-      // allow updating status too
       if (app.status) payload.status = app.status;
       await api.applications.update(token, id, payload);
       navigate("/dashboard");
@@ -82,43 +82,62 @@ export default function ApplicationDetail({ token }) {
 
   if (loading)
     return (
-      <div className="container py-5 text-center text-secondary">Loading…</div>
+      <div className="loading-state">
+        <div className="spinner-border text-primary mb-3" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+        <p className="text-muted">Loading application details...</p>
+      </div>
     );
   if (!app)
     return (
-      <div className="container py-5 text-center text-secondary">Not found</div>
+      <div className="error-state">
+        <div className="error-icon">
+          <FiTrash2 />
+        </div>
+        <h4 className="error-title">Application Not Found</h4>
+        <p className="error-message">
+          This application may have been deleted or doesn't exist.
+        </p>
+      </div>
     );
 
   return (
     <div className="container py-4 py-md-5">
-      <div className="d-flex align-items-end justify-content-between flex-wrap gap-2 mb-3">
+      <div className="edit-header">
         <div>
-          <h1 className="h4 mb-1">Edit application</h1>
-          <div className="text-secondary small">Update details and status</div>
+          <h1 className="edit-title">Edit Application</h1>
+          <p className="edit-subtitle">
+            Update your application details and track progress
+          </p>
         </div>
-        <div className="d-flex gap-2">
+        <div className="edit-actions">
           <Button
             variant="outline-danger"
-            className="d-inline-flex align-items-center gap-2"
+            className="btn-modern d-inline-flex align-items-center gap-2"
             onClick={handleDelete}
           >
-            <FiTrash2 /> Delete
+            <FiTrash2 /> Delete Application
           </Button>
           <Button
-            className="d-inline-flex align-items-center gap-2"
+            className="btn-modern btn-primary-modern d-inline-flex align-items-center gap-2"
             onClick={handleSave}
             disabled={saving}
           >
-            <FiSave /> {saving ? "Saving…" : "Save changes"}
+            <FiSave /> {saving ? "Saving…" : "Save Changes"}
           </Button>
         </div>
       </div>
 
-      {error && <Alert variant="danger">{error}</Alert>}
+      {error && (
+        <Alert variant="danger" className="error-alert">
+          {error}
+        </Alert>
+      )}
 
-      <Card className="border-0 shadow-sm">
-        <Card.Body>
-          <Form onSubmit={handleSave} className="vstack gap-3">
+      <Card className="card-modern">
+        <Card.Body className="p-4">
+          <Form onSubmit={handleSave} className="form-modern vstack gap-4">
             <Row className="g-3">
               <Col md={6}>
                 <Form.Group>
@@ -186,11 +205,11 @@ export default function ApplicationDetail({ token }) {
             </Form.Group>
           </Form>
         </Card.Body>
-         </Card>
-      </div>
-   );
+      </Card>
+    </div>
+  );
 }
 
 ApplicationDetail.propTypes = {
-   token: PropTypes.string.isRequired,
+  token: PropTypes.string.isRequired,
 };

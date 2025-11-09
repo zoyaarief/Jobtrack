@@ -2,20 +2,18 @@ import { Navbar, Container, Nav, Button } from "react-bootstrap";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { FiBriefcase, FiLogOut } from "react-icons/fi";
 import PropTypes from "prop-types";
+import "../css/Navbar.css";
 
 export default function Topbar({ user, onLogout }) {
   const location = useLocation();
   const isLogin = location.pathname === "/login";
   const isRegister = location.pathname === "/register";
   return (
-    <Navbar expand="md" bg="body-tertiary" className="border-bottom sticky-top">
+    <Navbar expand="md" className="navbar-modern sticky-top">
       <Container>
-        <Navbar.Brand
-          as={Link}
-          to="/"
-          className="d-flex align-items-center gap-2 fw-semibold"
-        >
-          <FiBriefcase /> JobTrack
+        <Navbar.Brand as={Link} to="/" className="navbar-brand-modern">
+          <FiBriefcase className="me-2" />
+          JobTrack
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="main-nav" />
         <Navbar.Collapse id="main-nav">
@@ -27,22 +25,19 @@ export default function Topbar({ user, onLogout }) {
           <div className="d-flex align-items-center gap-3">
             {user ? (
               <>
-                <span className="text-secondary small">
+                <span className="text-muted">
+                  Welcome,{" "}
                   {user.firstName
                     ? `${user.firstName} ${user.lastName || ""}`.trim()
                     : user.username}
                 </span>
-                <Button
-                  size="sm"
-                  variant="outline-secondary"
-                  onClick={onLogout}
-                  className="d-inline-flex align-items-center gap-2"
-                >
-                  <FiLogOut /> Logout
+                <Button size="sm" variant="outline-danger" onClick={onLogout}>
+                  <FiLogOut className="me-1" />
+                  Logout
                 </Button>
               </>
             ) : (
-              <div className="btn-group">
+              <div className="d-flex gap-2">
                 <Button
                   as={Link}
                   to="/login"

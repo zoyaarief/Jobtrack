@@ -1,0 +1,122 @@
+/* Dashboard Table Styles */
+.table-modern {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.table-modern thead th {
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--secondary-color)
+  );
+  color: white;
+  border: none;
+  font-weight: 600;
+  padding: 1rem;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+}
+
+.table-modern tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.table-modern tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.table-modern tbody td {
+  padding: 1rem;
+  vertical-align: middle;
+  border: none;
+}
+
+/* Table Row Styling */
+.table-row-hover {
+  transition: background-color 0.2s ease;
+}
+
+.table-row-hover:hover {
+  background-color: #f8f9fa;
+}
+
+.company-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--secondary-color)
+  );
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+/* Stats Card Icons */
+.stats-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  color: white;
+  margin: 0 auto 0.5rem auto;
+}
+
+.stats-icon svg {
+  font-size: 1.5rem;
+}
+
+.stats-icon span {
+  font-size: 1.5rem;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.stats-icon.info {
+  background: linear-gradient(135deg, var(--info-color), #4299e1);
+}
+
+.stats-icon.success {
+  background: linear-gradient(135deg, var(--success-color), #38a169);
+}
+
+.stats-icon.warning {
+  background: linear-gradient(135deg, var(--warning-color), #dd6b20);
+}
+
+.stats-icon.danger {
+  background: linear-gradient(135deg, var(--danger-color), #e53e3e);
+}
+
+/* Modal Header */
+.add-app-modal .modal-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.add-app-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--secondary-color)
+  );
+  color: white;
+}

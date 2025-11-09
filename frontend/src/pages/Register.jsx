@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Card, Form, Button, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import { FiUser, FiMail, FiLock, FiBriefcase } from "react-icons/fi";
 import PropTypes from "prop-types";
 import { api } from "../api.js";
+import "../css/Register.css";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -40,14 +42,45 @@ export default function Register() {
   return (
     <div className="container py-5">
       <div className="row justify-content-center">
-        <div className="col-12 col-sm-10 col-md-8 col-lg-6">
-          <Card className="shadow-sm border-0">
-            <Card.Body className="p-4 p-md-5">
-              <h1 className="h4 mb-4 text-center">Create your account</h1>
-              {error && <Alert variant="danger">{error}</Alert>}
-              {success && <Alert variant="success">{success}</Alert>}
-              <Form onSubmit={handleSubmit} className="row g-3">
-                <div className="col-12 col-md-6">
+        <div className="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
+          <div className="text-center mb-4">
+            <div className="register-hero">
+              <FiUser />
+            </div>
+            <h1 className="register-title">Join JobTrack Today</h1>
+            <p className="register-subtitle">
+              Create your account and start tracking your applications
+            </p>
+          </div>
+
+          <Card className="card-modern">
+            <Card.Body className="p-4">
+              {error && (
+                <Alert
+                  variant="danger"
+                  className="border-0"
+                  style={{
+                    background: "var(--danger-gradient)",
+                    color: "white",
+                  }}
+                >
+                  {error}
+                </Alert>
+              )}
+              {success && (
+                <Alert
+                  variant="success"
+                  className="border-0"
+                  style={{
+                    background: "var(--success-gradient)",
+                    color: "white",
+                  }}
+                >
+                  {success}
+                </Alert>
+              )}
+              <Form onSubmit={handleSubmit} className="form-modern row">
+                <div className="col-md-6 mb-3">
                   <Form.Label>First name</Form.Label>
                   <Form.Control
                     value={form.firstName}
@@ -55,7 +88,7 @@ export default function Register() {
                     required
                   />
                 </div>
-                <div className="col-12 col-md-6">
+                <div className="col-md-6 mb-3">
                   <Form.Label>Last name</Form.Label>
                   <Form.Control
                     value={form.lastName}
@@ -63,7 +96,7 @@ export default function Register() {
                     required
                   />
                 </div>
-                <div className="col-12 col-md-6">
+                <div className="col-md-6 mb-3">
                   <Form.Label>Username</Form.Label>
                   <Form.Control
                     value={form.username}
@@ -71,7 +104,7 @@ export default function Register() {
                     required
                   />
                 </div>
-                <div className="col-12 col-md-6">
+                <div className="col-md-6 mb-3">
                   <Form.Label>Email</Form.Label>
                   <Form.Control
                     type="email"
@@ -80,7 +113,7 @@ export default function Register() {
                     required
                   />
                 </div>
-                <div className="col-12">
+                <div className="col-12 mb-3">
                   <Form.Label>Password</Form.Label>
                   <Form.Control
                     type="password"
@@ -90,20 +123,39 @@ export default function Register() {
                   />
                 </div>
                 <div className="col-12">
-                  <Button type="submit" className="w-100" disabled={loading}>
+                  <Button
+                    type="submit"
+                    className="btn-modern btn-secondary-modern w-100"
+                    disabled={loading}
+                  >
                     {loading ? "Creating…" : "Create account"}
                   </Button>
                 </div>
               </Form>
-              <p className="text-center text-secondary small mt-3 mb-0">
-                Already have an account? <Link to="/login">Sign in</Link>
-              </p>
+              <div className="text-center mt-4">
+                <p className="text-secondary mb-0">
+                  Already have an account?{" "}
+                  <Link
+                    to="/login"
+                    className="fw-semibold"
+                    style={{
+                      color: "#667eea",
+                      textDecoration: "none",
+                      transition: "all 0.3s ease",
+                    }}
+                    onMouseEnter={(e) => (e.target.style.color = "#764ba2")}
+                    onMouseLeave={(e) => (e.target.style.color = "#667eea")}
+                  >
+                    Sign in here
+                  </Link>
+                </p>
+              </div>
             </Card.Body>
           </Card>
         </div>
-         </div>
       </div>
-   );
+    </div>
+  );
 }
 
 Register.propTypes = {};
