@@ -1,7 +1,7 @@
 // server/questionsRoutes.js
 import express from "express";
 import { ObjectId } from "mongodb";
-import authMiddleware from "./authMiddleware.js"; // make sure path matches your project
+import authMiddleware from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
