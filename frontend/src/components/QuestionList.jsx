@@ -15,7 +15,7 @@ export default function QuestionList({ company }) {
         async function fetchQuestions() {
             try {
                 const res = await fetch(
-                    `http://localhost:3000/api/questions?company=${encodeURIComponent(company)}`
+                    `/api/questions?company=${encodeURIComponent(company)}`
                 );
                 const data = await res.json();
                 setQuestions(data || []);
@@ -32,7 +32,7 @@ export default function QuestionList({ company }) {
     async function handleDelete(id) {
         if (!window.confirm("Are you sure you want to delete this experience?")) return;
         try {
-            const res = await fetch(`http://localhost:3000/api/questions/${id}`, {
+            const res = await fetch(`/api/questions/${id}`, {
                 method: "DELETE",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -61,7 +61,7 @@ export default function QuestionList({ company }) {
 
     async function handleEditSubmit(updatedForm) {
         try {
-            const res = await fetch(`http://localhost:3000/api/questions/${selected._id}`, {
+            const res = await fetch(`/api/questions/${selected._id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
