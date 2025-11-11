@@ -1,7 +1,8 @@
 // server/questionsRoutes.js
 import express from "express";
 import { ObjectId } from "mongodb";
-import authMiddleware from "../middlewares/authMiddleware.js";
+import { authMiddleware } from "../middlewares/authMiddleware.js";
+
 
 const router = express.Router();
 
