@@ -9,9 +9,9 @@ export default function InterviewHub() {
     const [defaultCompanies, setDefaultCompanies] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [hasResults, setHasResults] = useState(true);
-    const [isLoggedIn, setIsLoggedIn] = useState(false); 
-    
-    
+    const [isLoggedIn, setIsLoggedIn] = useState(false); // ✅ Changed to state
+
+    // ✅ Check login status in useEffect (client-side only)
     useEffect(() => {
         if (typeof window !== 'undefined' && window.localStorage) {
             const token = localStorage.getItem("token");
@@ -163,7 +163,17 @@ export default function InterviewHub() {
             )}
 
             {/* Show Question List when company selected */}
-            {selectedCompany && <QuestionList company={selectedCompany} />}
+            {selectedCompany && (
+                <>
+                    <button
+                        className="btn btn-outline-secondary mb-3"
+                        onClick={() => setSelectedCompany("")}
+                    >
+                        ← Back to Companies
+                    </button>
+                    <QuestionList company={selectedCompany} />
+                </>
+            )}
 
             {/* No results found */}
             {!hasResults && (
