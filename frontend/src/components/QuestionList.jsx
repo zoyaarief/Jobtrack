@@ -110,7 +110,9 @@ export default function QuestionList({ company }) {
             <div className="interview-layout">
                 {/* LEFT COLUMN */}
                 <div className="interview-list">
-                    <h3 className="fw-bold mb-3">Questions for {company}</h3>
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                        <h3 className="fw-bold mb-0">Questions for {company}</h3>
+                    </div>
                     {questions.map((q) => (
                         <div
                             key={q._id}
