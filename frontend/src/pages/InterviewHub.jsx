@@ -78,7 +78,7 @@ export default function InterviewHub() {
 
         try {
             const res = await fetch(
-                `api/questions?company=${normalized}`
+                `/api/questions?company=${normalized}`
             );
             const data = await res.json();
 
