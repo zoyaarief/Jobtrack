@@ -9,9 +9,9 @@ export default function InterviewHub() {
     const [defaultCompanies, setDefaultCompanies] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [hasResults, setHasResults] = useState(true);
-    const [isLoggedIn, setIsLoggedIn] = useState(false); // ✅ Changed to state
-
-    // ✅ Check login status in useEffect (client-side only)
+    const [isLoggedIn, setIsLoggedIn] = useState(false); 
+    
+    
     useEffect(() => {
         if (typeof window !== 'undefined' && window.localStorage) {
             const token = localStorage.getItem("token");
