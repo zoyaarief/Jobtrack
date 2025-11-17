@@ -1,5 +1,5 @@
 /* 
-JobTrack App.jsx — review notes (drop-in)
+JobTrack App.jsx — review notes
 
 • Preserve intended redirect after login:
   - In Login, navigate to location.state?.from?.pathname ?? "/dashboard" after onLogin(token).
