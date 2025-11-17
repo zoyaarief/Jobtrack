@@ -1,3 +1,39 @@
+/* 
+JobTrack App.jsx — review notes (drop-in)
+
+• Preserve intended redirect after login:
+  - In Login, navigate to location.state?.from?.pathname ?? "/dashboard" after onLogin(token).
+
+• Centralize auth state:
+  - Move token/user + login/logout to an AuthContext (useAuth()) to avoid prop-drilling.
+
+• Safer token handling:
+  - Prefer HttpOnly secure cookies; if sticking to localStorage, add a 401 interceptor to auto-logout.
+
+• Reduce flicker on auth check:
+  - Show a small “checking session…” skeleton until /me resolves; then render routes.
+
+• Memoize handlers:
+  - Wrap handleLogin / handleLogout with useCallback to prevent unnecessary re-renders.
+
+• Route layout cleanup:
+  - Use a layout route (<Shell> with <Outlet/>) for Topbar/Footer/background instead of repeating per page.
+
+• Lazy load pages:
+  - React.lazy + <Suspense fallback="Loading…"> for Dashboard/Profile/ApplicationDetail to improve TTI.
+
+• Modal routing for AddExperience:
+  - Render /interview-hub/add-experience as a modal over InterviewHub using backgroundLocation state.
+
+• Styles & theming:
+  - Move inline radial-gradient background into app.css (.app-bg) for consistency and caching.
+
+• Error handling & UX:
+  - Centralize error boundary for routes; toast on /me failure and redirect to /login.
+
+*/
+
+
 import { useEffect, useState } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
