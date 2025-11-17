@@ -1,3 +1,37 @@
+/*
+AddExperienceModal.jsx — drop-in review notes
+
+• Validation & UX
+  - Disable submit until required fields (company, role, questionTitle) are non-empty and trimmed.
+  - Add max lengths (e.g., 120 for title, 2000 for description/tips) and show remaining chars.
+  - Validate difficulty to one of: "", "Easy", "Medium", "Hard".
+
+• Prevent double submit
+  - Track a `submitting` state; disable submit button and show a small spinner while awaiting onSubmit.
+
+• Error lifecycle
+  - Clear `error` when user edits any field or on modal open; show specific messages from onSubmit.
+  - Optionally render field-level errors (e.g., invalid URL if you add one later).
+
+• Focus management & a11y
+  - Auto-focus the first empty required input when modal opens.
+  - Ensure labels have `controlId` or htmlFor; add aria-live="polite" to error alert.
+
+• LocalStorage safety
+  - You already guard localStorage; also consider passing userEmail as a prop from a centralized auth context.
+
+• State reset
+  - On close, reset form to initialData (or blanks). Avoid carrying stale values when reopening.
+
+• Sanitization
+  - Server-side: sanitize `questionDescription` and `tips` to prevent HTML/script injection.
+  - Client-side: avoid rendering as HTML later without sanitization.
+
+• Keyboard & ergonomics
+  - Allow Cmd/Ctrl+Enter to submit; Escape closes via Modal by default.
+  - Make the footer sticky only if needed; it’s already visually sticky.
+*/
+
 import React, { useState, useEffect } from "react";
 import { Modal, Form, Button, Alert, Row, Col } from "react-bootstrap";
 import PropTypes from "prop-types";

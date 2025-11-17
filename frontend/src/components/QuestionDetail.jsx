@@ -1,3 +1,41 @@
+/*
+QuestionDetail.jsx — drop-in review notes
+
+• Loading/empty/error states
+  - Add a distinct "loading…" skeleton and an explicit error fallback instead of only null/empty.
+  - Keep the current "select a question" empty state (good).
+
+• Security & content rendering
+  - Never render untrusted HTML; keep plain text. If you later support rich text/Markdown, sanitize first (e.g., DOMPurify).
+  - Preserve formatting for long descriptions (newline → <br/> or CSS white-space: pre-wrap).
+
+• UX polish
+  - Show difficulty with a colored badge (Easy/Medium/Hard) and add a tooltip for what difficulty means.
+  - Truncate ultra-long description/tips with “Show more / Show less”.
+  - Add a small copy-to-clipboard button for the prompt/title.
+  - If tags exist, make them clickable to filter questions by tag.
+
+• Accessibility
+  - Promote “Question Details” to an <h2> and ensure a landmark/region (role="region" aria-labelledby).
+  - Provide aria-live="polite" for content changes when a different question is selected.
+  - Ensure the “Generate AI Answer” disabled button has aria-disabled="true" and a title explaining why.
+
+• State resilience
+  - Guard against missing fields (already done) and trim strings before display.
+  - Normalize difficulty casing on input (“easy” → “Easy”).
+
+• Buttons & actions
+  - Replace the disabled AI button with a tertiary link-styled button and keep it focusable, or hide when feature-gated.
+  - If edit/delete actions will be added, show them conditionally based on ownership/role.
+
+• Styling & structure
+  - Move utility classes to CSS (QuestionDetail.css) and use BEM-style names (.question-detail__title, __card, __tags).
+  - Add max-width and responsive spacing for readability; ensure color-contrast AA.
+
+• Testability
+  - Add data-testid attributes on the major sections (title, company, role, difficulty, description, tips, tags).
+
+*/
 import React from "react";
 import PropTypes from "prop-types";
 import "../css/QuestionDetail.css";
