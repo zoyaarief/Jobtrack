@@ -1,3 +1,47 @@
+
+
+/*
+Dashboard.jsx 
+
+• Data loading & cancellation
+  - Use AbortController in refresh() and cancel on unmount/token change to avoid setState after unmount.
+  - Surface specific errors (network vs. 401/403/500) and show a retry button.
+
+• Performance on large lists
+  - Add pagination/sorting/filtering server-side (?status=, ?q=, ?sort=submittedAt).
+  - For long tables, consider react-window virtualization; memoize derived counts with useMemo.
+  - Extract StatusBadge and TableRow into memoized components.
+
+• Delete safety & UX
+  - Confirm before delete (modal or window.confirm) and show a success toast after.
+  - Optimistic UI: remove row immediately, rollback on failure.
+
+• Form validation & ergonomics
+  - Validate URL (HTML5 + extra regex if needed) and required fields; disable submit until valid.
+  - Reset modal form on close; set initial focus to Company input when modal opens.
+  - Use onKeyDown Enter to submit and Esc to cancel (bootstrap handles Esc by default).
+
+• Date handling
+  - Normalize dates to ISO (yyyy-mm-dd) to avoid TZ off-by-one; store/compare in UTC.
+  - Show relative dates (“3 days ago”) as a tooltip if helpful.
+
+• Accessibility
+  - Ensure table headers use <th scope="col">, rows use scope="row"; provide aria-labels for icon-only buttons.
+  - Don’t rely on color alone for status—keep text labels (you already do, good).
+
+• Error & empty states
+  - Replace inline Alert in modal body with a small alert near the affected field when possible.
+  - Provide a “Try again” button on load errors; keep the empty-state CTA you have (nice).
+
+• API & resilience
+  - Allow refresh({ signal }) pass-through to api layer; support 429 backoff / subtle retry on GET.
+  - Consider TanStack Query for caching, retries, request dedupe, and background refresh.
+
+• Styling & cleanliness
+  - Move inline styles (e.g., button padding, stats icons) into Dashboard.css tokens/vars.
+  - Extract StatsCard into a small component to remove repetition.
+
+*/
 import { useEffect, useState } from "react";
 import { Card, Form, Button, Table, Badge, Modal } from "react-bootstrap";
 import {
