@@ -1,3 +1,56 @@
+/*
+ApplicationDetail.jsx — drop-in review notes
+
+• Data fetching & cancellation
+  - Use AbortController to cancel in-flight fetch on unmount/id change to avoid setState on unmounted.
+  - Distinguish 404 vs 403 vs network errors; show tailored messages and a “Back” button.
+
+• Save UX & validation
+  - Disable “Save Changes” until form is dirty (compare to initial snapshot).
+  - Validate fields (zod/yup or HTML constraints): company (required), role (optional), url (valid URL), submittedAt (valid date).
+  - Show inline field errors; focus first invalid input on submit.
+
+• Delete safety
+  - Confirm before delete (modal or window.confirm). After delete, toast success and navigate(-1) or to /dashboard.
+
+• Form state & libs
+  - Consider react-hook-form + zod resolver for schema + dirty tracking + better performance on large forms.
+
+• Date handling
+  - Beware timezones: currently converting to ISO yyyy-mm-dd string. When saving, send an ISO date (e.g., `2025-11-17`) or UTC midnight to avoid off-by-one.
+
+• Error handling
+  - Surface API status codes in `setError` (e.g., `Failed to save (400): <message>`).
+  - Optionally add a top-level toast system for success/error instead of inline alert only.
+
+• Performance & effects
+  - Guard load effect on `id`: if same `id`, skip.
+  - Memoize `updateField` with useCallback or use a single form library to prevent extra re-renders.
+
+• Buttons & forms
+  - Put type="submit" on Save button and rely on <Form onSubmit={handleSave}> (already done), but also prevent double submits (`disabled={saving}` + dirty check).
+  - Add `variant="danger"` to Delete and `aria-label` for icons for accessibility.
+
+• API payload consistency
+  - Normalize payload keys server-side; avoid sending undefined (omit keys or send null explicitly).
+  - Consider optimistic update or redirect with state: `navigate("/dashboard", { state: { justSaved: true } })`.
+
+• Security & hygiene
+  - Sanitize/escape notes server-side; on client, do not dangerouslySetInnerHTML anywhere it’s displayed.
+  - Do not log token/error details with PII to console in production.
+
+• Navigation & empty states
+  - Add a small “Back to Dashboard” link near the title.
+  - For “Application Not Found,” offer a button to create a new application.
+
+• Styling & a11y
+  - Associate labels with controls via `controlId` on Form.Group for better a11y.
+  - Add `placeholder="Company name"` / screen-reader hints where useful.
+
+• Types
+  - Add a PropTypes shape (or migrate to TypeScript) for `app` object when lifting state or using context.
+*/
+
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Card, Form, Button, Row, Col, Alert } from "react-bootstrap";
