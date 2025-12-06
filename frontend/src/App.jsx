@@ -8,6 +8,7 @@ import Dashboard from "./pages/Dashboard.jsx";
 import ApplicationDetail from "./pages/ApplicationDetail.jsx";
 import Profile from "./pages/Profile.jsx";
 import InterviewHub from "./pages/InterviewHub.jsx";
+import Homepage from "./pages/Homepage.jsx";
 import { api } from "./api.js";
 import AddExperienceModal from "./components/AddExperienceModal.jsx";
 
@@ -129,7 +130,7 @@ export default function App() {
                             isAuthed ? (
                                 <Navigate to="/dashboard" replace />
                             ) : (
-                                <Navigate to="/login" replace />
+                                <Homepage />
                             )
                         }
                     />
