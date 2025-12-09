@@ -4,7 +4,7 @@ import {
    FiExternalLink,
    FiPlus,
    FiTrash2,
-   FiEye,
+   FiEdit,
    FiBriefcase,
 } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
@@ -147,7 +147,7 @@ export default function Dashboard({ token }) {
                <div className='col-12 col-sm-6 col-lg-3'>
                   <Card className='card-modern h-100'>
                      <Card.Body className='text-center p-3'>
-                        <div className='stats-icon info'>
+                        <div className='stats-icon info text-center'>
                            <FiBriefcase />
                         </div>
                         <h3
@@ -344,7 +344,7 @@ export default function Dashboard({ token }) {
                                              navigate(`/applications/${a._id}`)
                                           }
                                        >
-                                          <FiEye /> View
+                                          <FiEdit /> Edit
                                        </Button>
                                        <Button
                                           size='sm'
