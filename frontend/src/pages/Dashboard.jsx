@@ -133,10 +133,9 @@ export default function Dashboard({ token }) {
             </div>
             <Button
                onClick={() => setShowCreate(true)}
-               className='btn-modern btn-primary-modern d-inline-flex align-items-center gap-2'
-               style={{ fontSize: "1rem", padding: "0.75rem 1.5rem" }}
+               className='btn-cta-primary d-inline-flex align-items-center gap-2'
             >
-               <FiPlus style={{ fontSize: "1.1rem" }} />
+               <FiPlus style={{ fontSize: "1.25rem" }} />
                Add Application
             </Button>
          </div>
