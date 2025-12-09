@@ -1,28 +1,28 @@
 /* src/css/CompanySearch.css */
 .company-search-container {
-    text-align: center;
-    margin-top: 2rem;
-    margin-bottom: 2rem;
+  text-align: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
 .company-input {
-    padding: 0.6rem 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    width: 300px;
-    margin-right: 0.5rem;
+  padding: 0.6rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  width: 300px;
+  margin-right: 0.5rem;
 }
 
 .search-btn {
-    padding: 0.6rem 1.25rem;
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    border-radius: var(--radius-md);
-    cursor: pointer;
-    font-weight: 500;
+  padding: 0.6rem 1.25rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-weight: 500;
 }
 
 .search-btn:hover {
-    background-color: var(--primary-hover);
+  background-color: var(--primary-hover);
 }

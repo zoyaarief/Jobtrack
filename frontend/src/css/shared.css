@@ -2,63 +2,63 @@
 
 /* Modern Card */
 .card-modern {
-    background: var(--bg-white);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-sm);
-    transition: box-shadow 0.2s ease;
+  background: var(--bg-white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s ease;
 }
 
 .card-modern:hover {
-    box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-md);
 }
 
 .card-modern .card-header {
-    background: var(--light-bg);
-    color: var(--dark-text);
-    border-bottom: 1px solid var(--border-color);
-    padding: 1rem;
-    font-weight: 600;
+  background: var(--light-bg);
+  color: var(--dark-text);
+  border-bottom: 1px solid var(--border-color);
+  padding: 1rem;
+  font-weight: 600;
 }
 
 /* Modern Buttons */
 .btn-modern {
-    border-radius: var(--radius-sm);
-    font-weight: 500;
-    padding: 0.5rem 1rem;
-    border: none;
-    transition: all 0.2s ease;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border: none;
+  transition: all 0.2s ease;
 }
 
 .btn-primary-modern {
-    background: var(--primary-color);
-    color: white;
+  background: var(--primary-color);
+  color: white;
 }
 
 .btn-primary-modern:hover {
-    background: var(--primary-hover);
-    transform: translateY(-1px);
+  background: var(--primary-hover);
+  transform: translateY(-1px);
 }
 
 .btn-secondary-modern {
-    background: var(--secondary-color); /* Fixed: Was pink gradient */
-    color: white;
+  background: var(--secondary-color); /* Fixed: Was pink gradient */
+  color: white;
 }
 
 .btn-success-modern {
-    background: var(--success-color);
-    color: white;
+  background: var(--success-color);
+  color: white;
 }
 
 /* Form Controls */
 .form-modern .form-control {
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-sm);
-    padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.75rem;
 }
 
 .form-modern .form-control:focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(110, 86, 207, 0.3);
-    outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(110, 86, 207, 0.3);
+  outline: none;
 }

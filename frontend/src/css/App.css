@@ -1,32 +1,32 @@
 /* src/css/App.css */
 #root {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Ensure footer sticks to bottom */
 .flex-grow-1 {
-    flex-grow: 1;
+  flex-grow: 1;
 }
 
 .footer-modern {
-    background: #0b0c10;
-    border-top: 1px solid var(--border-color);
+  background: #0b0c10;
+  border-top: 1px solid var(--border-color);
 }
 
 .footer-muted {
-    color: var(--muted-text);
+  color: var(--muted-text);
 }
 
 /* Global Link Styles */
 a {
-    color: var(--primary-color);
-    text-decoration: none;
-    transition: color 0.2s;
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color 0.2s;
 }
 
 a:hover {
-    color: var(--primary-hover);
-    text-decoration: underline;
+  color: var(--primary-hover);
+  text-decoration: underline;
 }

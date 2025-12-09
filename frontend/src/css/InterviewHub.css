@@ -1,51 +1,52 @@
 /* src/css/InterviewHub.css */
 .interview-hub.container {
-    max-width: 1200px;
+  max-width: 1200px;
 }
 
 /* GRID LAYOUT FIX */
 .company-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
-    padding: 1rem 0;
-    justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem 0;
+  justify-content: center;
 }
 
 @media (min-width: 992px) {
-    .company-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
+  .company-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .company-card {
-    border-radius: var(--radius-lg);
-    background: var(--bg-white);
-    padding: 2rem 1.25rem;
-    transition: all 0.3s ease;
-    box-shadow: var(--shadow-sm);
-    border: 1px solid var(--border-color);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
+  border-radius: var(--radius-lg);
+  background: var(--bg-white);
+  padding: 2rem 1.25rem;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .company-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-md);
-    border-color: var(--primary-color);
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-color);
 }
 
-.company-logo, .company-logo-initials {
-    width: 60px;
-    height: 60px;
-    padding: 8px;
-    border-radius: 10px;
-    background: #161a24;
-    object-fit: contain;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.company-logo,
+.company-logo-initials {
+  width: 60px;
+  height: 60px;
+  padding: 8px;
+  border-radius: 10px;
+  background: #161a24;
+  object-fit: contain;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

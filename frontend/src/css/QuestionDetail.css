@@ -1,45 +1,57 @@
 /* src/css/QuestionDetail.css */
 .interview-detail {
-    background: var(--bg-white);
-    border-radius: var(--radius-lg);
-    padding: 2rem;
-    box-shadow: var(--shadow-sm);
-    border: 1px solid var(--border-color);
-    position: relative;
+  background: var(--bg-white);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+  position: relative;
 }
 
 .top-action-buttons {
-    position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
-    display: flex;
-    gap: 0.5rem;
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  gap: 0.5rem;
 }
 
 .action-btn {
-    padding: 0.4rem 0.8rem;
-    border-radius: var(--radius-sm);
-    font-size: 0.85rem;
-    cursor: pointer;
-    background: white;
-    border: 1px solid var(--border-color);
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  cursor: pointer;
+  background: white;
+  border: 1px solid var(--border-color);
 }
 
-.action-btn.edit-btn { color: var(--primary-color); border-color: var(--primary-color); }
-.action-btn.edit-btn:hover { background: var(--primary-color); color: white; }
+.action-btn.edit-btn {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+.action-btn.edit-btn:hover {
+  background: var(--primary-color);
+  color: white;
+}
 
-.action-btn.delete-btn { color: var(--danger-color); border-color: var(--danger-color); }
-.action-btn.delete-btn:hover { background: var(--danger-color); color: white; }
+.action-btn.delete-btn {
+  color: var(--danger-color);
+  border-color: var(--danger-color);
+}
+.action-btn.delete-btn:hover {
+  background: var(--danger-color);
+  color: white;
+}
 
 .question-heading {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    color: var(--dark-text);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--dark-text);
 }
 
 .tips-section {
-    margin-top: 1.5rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--border-color);
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
 }

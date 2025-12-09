@@ -1,26 +1,26 @@
 /* src/css/Navbar.css */
 .navbar-modern {
-    background: rgba(11, 12, 16, 0.92);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--border-color);
-    box-shadow: var(--shadow-sm);
+  background: rgba(11, 12, 16, 0.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
 }
 
 .navbar-brand-modern {
-    font-weight: 700;
-    font-size: 1.25rem;
-    color: var(--dark-text) !important;
-    display: flex;
-    align-items: center;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--dark-text) !important;
+  display: flex;
+  align-items: center;
 }
 
 .nav-link {
-    font-weight: 500;
-    color: var(--muted-text) !important;
-    transition: color 0.2s ease;
+  font-weight: 500;
+  color: var(--muted-text) !important;
+  transition: color 0.2s ease;
 }
 
 .nav-link:hover,
 .nav-link.active {
-    color: var(--primary-color) !important;
+  color: var(--primary-color) !important;
 }

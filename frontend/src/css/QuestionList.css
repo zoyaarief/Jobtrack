@@ -1,167 +1,167 @@
 /* src/css/QuestionList.css */
 
 .interview-layout {
-    display: grid;
-    grid-template-columns: 30% 70%;
-    gap: 1.5rem;
-    margin-top: 2rem;
-    min-height: 70vh;
+  display: grid;
+  grid-template-columns: 30% 70%;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  min-height: 70vh;
 }
 
 .interview-list {
-    background: var(--bg-white);
-    border-radius: var(--radius-lg);
-    padding: 1rem;
-    box-shadow: var(--shadow-sm);
-    overflow-y: auto;
-    max-height: 75vh;
+  background: var(--bg-white);
+  border-radius: var(--radius-lg);
+  padding: 1rem;
+  box-shadow: var(--shadow-sm);
+  overflow-y: auto;
+  max-height: 75vh;
 }
 
 .list-group-item {
-    padding: 0.8rem 1rem !important;
-    border-radius: var(--radius-md) !important;
-    margin-bottom: 0.5rem;
-    border: 1px solid transparent;
-    transition: all 0.2s ease;
-    cursor: pointer;
+  padding: 0.8rem 1rem !important;
+  border-radius: var(--radius-md) !important;
+  margin-bottom: 0.5rem;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+  cursor: pointer;
 }
 
 .list-group-item:hover {
-    border-color: var(--primary-color);
-    background-color: #161a24;
+  border-color: var(--primary-color);
+  background-color: #161a24;
 }
 
 .list-group-item.active .question-title {
-    color: var(--primary-color) !important;
+  color: var(--primary-color) !important;
 }
 
 .list-group-item.active .role-label {
-    color: var(--muted-text) !important;
+  color: var(--muted-text) !important;
 }
 
 .question-title {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--dark-text);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--dark-text);
 }
 
 .role-label {
-    font-size: 0.85rem;
-    color: var(--muted-text);
+  font-size: 0.85rem;
+  color: var(--muted-text);
 }
 
 /* Right Panel */
 .interview-detail {
-    background: var(--bg-white);
-    border-radius: var(--radius-lg);
-    padding: 2rem;
-    box-shadow: var(--shadow-sm);
-    border: 1px solid var(--border-color);
-    position: relative;
-    min-height: 300px;
+  background: var(--bg-white);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+  position: relative;
+  min-height: 300px;
 }
 
 .top-action-buttons {
-    position: absolute;
-    top: 1.2rem;
-    right: 1.2rem;
-    display: flex;
-    gap: 0.5rem;
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  display: flex;
+  gap: 0.5rem;
 }
 
 .action-btn {
-    font-size: 0.9rem;
-    padding: 6px 10px;
-    border-radius: 6px;
-    border: 1px solid var(--border-color);
-    background: var(--bg-white);
-    cursor: pointer;
-    transition: all 0.2s ease;
+  font-size: 0.9rem;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-white);
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .action-btn:hover {
-    transform: translateY(-1px);
+  transform: translateY(-1px);
 }
 
 .action-btn.edit-btn {
-    color: var(--primary-color);
-    border-color: var(--primary-color);
+  color: var(--primary-color);
+  border-color: var(--primary-color);
 }
 
 .action-btn.edit-btn:hover {
-    background: var(--primary-color);
-    color: #fff;
+  background: var(--primary-color);
+  color: #fff;
 }
 
 .action-btn.delete-btn {
-    color: var(--danger-color);
-    border-color: var(--danger-color);
+  color: var(--danger-color);
+  border-color: var(--danger-color);
 }
 
 .action-btn.delete-btn:hover {
-    background: var(--danger-color);
-    color: #fff;
+  background: var(--danger-color);
+  color: #fff;
 }
 
 .tab-header {
-    display: flex;
-    gap: 1rem;
-    border-bottom: 1px solid var(--border-color);
-    margin-bottom: 1rem;
-    margin-top: 2.5rem;
+  display: flex;
+  gap: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 1rem;
+  margin-top: 2.5rem;
 }
 
 .tab-btn {
-    background: none;
-    border: none;
-    padding: 0.6rem 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    color: var(--muted-text);
-    border-bottom: 2px solid transparent;
-    transition: 0.2s ease;
+  background: none;
+  border: none;
+  padding: 0.6rem 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--muted-text);
+  border-bottom: 2px solid transparent;
+  transition: 0.2s ease;
 }
 
 .tab-btn.active {
-    color: var(--primary-color);
-    border-bottom-color: var(--primary-color);
+  color: var(--primary-color);
+  border-bottom-color: var(--primary-color);
 }
 
 .tab-btn:hover {
-    background: #161a24;
+  background: #161a24;
 }
 
 .question-heading {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--dark-text);
-    margin-bottom: 1rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--dark-text);
+  margin-bottom: 1rem;
 }
 
 .role-info,
 .difficulty {
-    font-size: 0.9rem;
-    color: var(--muted-text);
+  font-size: 0.9rem;
+  color: var(--muted-text);
 }
 
 .placeholder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--muted-text);
-    font-size: 1.05rem;
-    font-style: italic;
-    min-height: 300px;
-    text-align: center;
-    background: transparent !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted-text);
+  font-size: 1.05rem;
+  font-style: italic;
+  min-height: 300px;
+  text-align: center;
+  background: transparent !important;
 }
 
 @media (max-width: 900px) {
-    .interview-layout {
-        grid-template-columns: 1fr;
-    }
+  .interview-layout {
+    grid-template-columns: 1fr;
+  }
 
-    .interview-list {
-        max-height: 250px;
-    }
+  .interview-list {
+    max-height: 250px;
+  }
 }

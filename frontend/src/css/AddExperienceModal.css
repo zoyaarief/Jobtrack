@@ -1,25 +1,26 @@
 /* src/css/ApplicationDetail.css */
 .edit-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .edit-title {
-    color: var(--dark-text);
-    font-weight: 700;
+  color: var(--dark-text);
+  font-weight: 700;
 }
 
 .edit-actions {
-    display: flex;
-    gap: 1rem;
+  display: flex;
+  gap: 1rem;
 }
 
-.loading-state, .error-state {
-    text-align: center;
-    padding: 4rem;
-    color: var(--muted-text);
+.loading-state,
+.error-state {
+  text-align: center;
+  padding: 4rem;
+  color: var(--muted-text);
 }
