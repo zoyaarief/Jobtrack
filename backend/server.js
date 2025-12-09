@@ -1,16 +1,14 @@
-// backend/server.js
 import express from "express";
 import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
+import passport from "passport";
+import cors from "cors";
 import { connectDB } from "./db/mongo.js";
 import authRoutes from "./routes/authRoutes.js";
 import questionsRoutes from "./routes/questionsRoutes.js";
 import applicationRoutes from "./routes/applicationRoutes.js";
 import companyRoutes from "./routes/companyRoutes.js";
-import passport from "passport";
-
-// 💡 FIX: Ensure this import has the .js extension!
 import passportConfig from "./config/passport.js";
 
 dotenv.config();
@@ -18,50 +16,37 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// 1. Middleware
+// middleware
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// 💡 FIX: Initialize Passport before routes
 app.use(passport.initialize());
 
-// 2. Connect to Database & Start Server
-// We wrap this in an immediately invoked async function
-(async () => {
-    try {
-        const db = await connectDB();
-        console.log("✅ Connected to MongoDB");
+// connect to DB
+const db = await connectDB().catch((err) => {
+  console.error("Failed to connect to MongoDB:", err);
+  process.exit(1);
+});
+passportConfig(passport, db);
+app.use((req, res, next) => {
+  req.db = db;
+  next();
+});
 
-        // 💡 FIX: Register the Passport Strategy immediately after DB connects
-        passportConfig(passport, db);
-        console.log("✅ Passport Strategy Registered");
+// API routes
+app.use("/api/auth", authRoutes);
+app.use("/api/questions", questionsRoutes);
+app.use("/api/applications", applicationRoutes);
+app.use("/api/companies", companyRoutes);
 
-        // Attach DB to request
-        app.use((req, res, next) => {
-            req.db = db;
-            next();
-        });
+// serve React frontend
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const frontendPath = path.resolve(__dirname, "../frontend/dist");
 
-        // 3. API Routes
-        app.use("/api/auth", authRoutes);
-        app.use("/api/questions", questionsRoutes);
-        app.use("/api/applications", applicationRoutes);
-        app.use("/api/companies", companyRoutes);
+app.use(express.static(frontendPath));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(frontendPath, "index.html"));
+});
 
-        // 4. Frontend Serving
-        const __filename = fileURLToPath(import.meta.url);
-        const __dirname = path.dirname(__filename);
-        const frontendPath = path.resolve(__dirname, "../frontend/dist");
-
-        app.use(express.static(frontendPath));
-        app.get("*", (req, res) => {
-            res.sendFile(path.join(frontendPath, "index.html"));
-        });
-
-        app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
-
-    } catch (err) {
-        console.error("❌ Fatal Server Error:", err);
-        process.exit(1);
-    }
-})();
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
