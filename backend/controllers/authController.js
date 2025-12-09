@@ -150,7 +150,7 @@ export const updateUser = async (req, res) => {
     let userIdObj;
     try {
       userIdObj = new ObjectId(userIdString);
-    } catch (e) {
+    } catch {
       userIdObj = null;
     }
     // Get the current email from the token (before update)

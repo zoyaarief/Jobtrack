@@ -106,7 +106,7 @@ export default function ApplicationDetail({ token }) {
             </div>
             <h4 className='error-title'>Application Not Found</h4>
             <p className='error-message'>
-               This application may have been deleted or doesn't exist.
+               This application may have been deleted or doesn&apos;t exist.
             </p>
          </div>
       );
