@@ -37,6 +37,15 @@ export default function Dashboard({ token }) {
    });
    const [saving, setSaving] = useState(false);
    const [showCreate, setShowCreate] = useState(false);
+   const [statusSaving, setStatusSaving] = useState({});
+
+   const statusOptions = [
+      { value: "applied", label: "Applied" },
+      { value: "interview", label: "Interview" },
+      { value: "offer", label: "Offer" },
+      { value: "rejected", label: "Rejected" },
+      { value: "pending", label: "Pending" },
+   ];
 
    async function refresh() {
       setError("");
@@ -106,6 +115,40 @@ export default function Dashboard({ token }) {
          await refresh();
       } catch (err) {
          setError(err.message || "Failed to delete");
+      }
+   }
+
+   async function handleStatusChange(id, status) {
+      // optimistic updates (yay)
+      const prevApps = apps;
+      const current = apps.find((item) => item._id === id);
+      if (!current) return;
+
+      const payload = {
+         company: current.company,
+         role: current.role,
+         submittedAt: current.submittedAt,
+         url: current.url,
+         notes: current.notes,
+         status,
+      };
+
+      setError("");
+      setStatusSaving((s) => ({ ...s, [id]: true }));
+      setApps((list) =>
+         list.map((item) => (item._id === id ? { ...item, status } : item))
+      );
+      try {
+         await api.applications.update(token, id, payload);
+      } catch (err) {
+         setApps(prevApps);
+         setError(err.message || "Failed to update status");
+      } finally {
+         setStatusSaving((s) => {
+            const next = { ...s };
+            delete next[id];
+            return next;
+         });
       }
    }
 
@@ -285,32 +328,55 @@ export default function Dashboard({ token }) {
                                  </td>
                                  <td>{a.role || "Not specified"}</td>
                                  <td>
-                                    <Badge
-                                       bg={
-                                          a.status === "interview"
-                                             ? "warning"
+                                    <div className='d-flex align-items-center gap-2'>
+                                       <Badge
+                                          bg={
+                                             a.status === "interview"
+                                                ? "warning"
+                                                : a.status === "rejected"
+                                                  ? "danger"
+                                                  : a.status === "offer"
+                                                    ? "info"
+                                                    : a.status === "applied" ||
+                                                        !a.status
+                                                      ? "success"
+                                                      : "secondary"
+                                          }
+                                          text='white'
+                                       >
+                                          {a.status === "interview"
+                                             ? "Interview"
                                              : a.status === "rejected"
-                                               ? "danger"
+                                               ? "Rejected"
                                                : a.status === "offer"
-                                                 ? "info"
+                                                 ? "Offer"
                                                  : a.status === "applied" ||
                                                      !a.status
-                                                   ? "success"
-                                                   : "secondary"
-                                       }
-                                       text='white'
-                                    >
-                                       {a.status === "interview"
-                                          ? "Interview"
-                                          : a.status === "rejected"
-                                            ? "Rejected"
-                                            : a.status === "offer"
-                                              ? "Offer"
-                                              : a.status === "applied" ||
-                                                  !a.status
-                                                ? "Applied"
-                                                : "Pending"}
-                                    </Badge>
+                                                   ? "Applied"
+                                                   : "Pending"}
+                                       </Badge>
+                                       <Form.Select
+                                          size='sm'
+                                          className='status-select'
+                                          value={a.status || "applied"}
+                                          onChange={(e) =>
+                                             handleStatusChange(
+                                                a._id,
+                                                e.target.value
+                                             )
+                                          }
+                                          disabled={!!statusSaving[a._id]}
+                                       >
+                                          {statusOptions.map((opt) => (
+                                             <option
+                                                key={opt.value}
+                                                value={opt.value}
+                                             >
+                                                {opt.label}
+                                             </option>
+                                          ))}
+                                       </Form.Select>
+                                    </div>
                                  </td>
                                  <td>{formatDate(a.submittedAt)}</td>
                                  <td>
