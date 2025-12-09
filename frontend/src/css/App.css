@@ -10,6 +10,15 @@
     flex-grow: 1;
 }
 
+.footer-modern {
+    background: #0b0c10;
+    border-top: 1px solid var(--border-color);
+}
+
+.footer-muted {
+    color: var(--muted-text);
+}
+
 /* Global Link Styles */
 a {
     color: var(--primary-color);

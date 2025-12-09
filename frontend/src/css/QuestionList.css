@@ -9,7 +9,7 @@
 }
 
 .interview-list {
-    background: var(--light-bg);
+    background: var(--bg-white);
     border-radius: var(--radius-lg);
     padding: 1rem;
     box-shadow: var(--shadow-sm);
@@ -17,7 +17,6 @@
     max-height: 75vh;
 }
 
-/* 💡 FIX: Targeted Bootstrap class directly to sync with index.css */
 .list-group-item {
     padding: 0.8rem 1rem !important;
     border-radius: var(--radius-md) !important;
@@ -29,17 +28,15 @@
 
 .list-group-item:hover {
     border-color: var(--primary-color);
-    background-color: #f8f9fa; /* Very subtle grey on hover */
+    background-color: #161a24;
 }
 
-/* 💡 FIX: Active State is now controlled by index.css
-   We only add specific text coloring here */
 .list-group-item.active .question-title {
-    color: var(--primary-color) !important; /* Title turns blue */
+    color: var(--primary-color) !important;
 }
 
 .list-group-item.active .role-label {
-    color: var(--muted-text) !important; /* Role stays muted */
+    color: var(--muted-text) !important;
 }
 
 .question-title {
@@ -77,23 +74,39 @@
     padding: 6px 10px;
     border-radius: 6px;
     border: 1px solid var(--border-color);
-    background: #fff;
+    background: var(--bg-white);
     cursor: pointer;
     transition: all 0.2s ease;
 }
 
-.action-btn:hover { transform: translateY(-1px); }
+.action-btn:hover {
+    transform: translateY(-1px);
+}
 
-.action-btn.edit-btn { color: var(--primary-color); border-color: var(--primary-color); }
-.action-btn.edit-btn:hover { background: var(--primary-color); color: #fff; }
+.action-btn.edit-btn {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
 
-.action-btn.delete-btn { color: var(--danger-color); border-color: var(--danger-color); }
-.action-btn.delete-btn:hover { background: var(--danger-color); color: #fff; }
+.action-btn.edit-btn:hover {
+    background: var(--primary-color);
+    color: #fff;
+}
+
+.action-btn.delete-btn {
+    color: var(--danger-color);
+    border-color: var(--danger-color);
+}
+
+.action-btn.delete-btn:hover {
+    background: var(--danger-color);
+    color: #fff;
+}
 
 .tab-header {
     display: flex;
     gap: 1rem;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--border-color);
     margin-bottom: 1rem;
     margin-top: 2.5rem;
 }
@@ -114,7 +127,9 @@
     border-bottom-color: var(--primary-color);
 }
 
-.tab-btn:hover { background: #f8f9fa; }
+.tab-btn:hover {
+    background: #161a24;
+}
 
 .question-heading {
     font-size: 1.25rem;
@@ -123,7 +138,8 @@
     margin-bottom: 1rem;
 }
 
-.role-info, .difficulty {
+.role-info,
+.difficulty {
     font-size: 0.9rem;
     color: var(--muted-text);
 }
@@ -141,6 +157,11 @@
 }
 
 @media (max-width: 900px) {
-    .interview-layout { grid-template-columns: 1fr; }
-    .interview-list { max-height: 250px; }
+    .interview-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .interview-list {
+        max-height: 250px;
+    }
 }

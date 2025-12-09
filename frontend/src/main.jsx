@@ -6,12 +6,13 @@ import "./css/index.css";
 import "./css/shared.css";
 import App from "./App.jsx";
 
-
+document.documentElement.setAttribute("data-bs-theme", "dark");
+document.body.setAttribute("data-bs-theme", "dark");
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </StrictMode>,
+   <StrictMode>
+      <BrowserRouter>
+         <App />
+      </BrowserRouter>
+   </StrictMode>
 );

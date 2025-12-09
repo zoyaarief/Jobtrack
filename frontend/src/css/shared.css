@@ -59,6 +59,6 @@
 
 .form-modern .form-control:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+    box-shadow: 0 0 0 3px rgba(110, 86, 207, 0.3);
     outline: none;
 }

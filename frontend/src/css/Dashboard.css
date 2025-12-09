@@ -7,7 +7,7 @@
 }
 
 .table-modern thead th {
-    background: var(--light-bg);
+    background: #0f1117;
     color: var(--dark-text);
     border-bottom: 2px solid var(--border-color);
     font-weight: 600;
@@ -23,7 +23,7 @@
 }
 
 .table-row-hover:hover {
-    background-color: #f8f9fa;
+    background-color: #161a24;
 }
 
 .company-avatar {
@@ -51,7 +51,18 @@
     margin-bottom: 0.5rem;
 }
 
-.stats-icon.info { background: var(--info-color); }
-.stats-icon.success { background: var(--success-color); }
-.stats-icon.warning { background: var(--warning-color); }
-.stats-icon.danger { background: var(--danger-color); }
+.stats-icon.info {
+    background: var(--info-color);
+}
+
+.stats-icon.success {
+    background: var(--success-color);
+}
+
+.stats-icon.warning {
+    background: var(--warning-color);
+}
+
+.stats-icon.danger {
+    background: var(--danger-color);
+}

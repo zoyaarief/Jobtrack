@@ -152,12 +152,12 @@ export default function App() {
                 </Routes>
             </main>
 
-            <footer className="mt-auto py-4 text-center bg-light border-top">
+            <footer className="footer-modern mt-auto py-4 text-center">
                 <div className="container">
                     <div className="d-flex align-items-center justify-content-center gap-2 mb-2">
                         <span className="navbar-brand-modern">JobTrack</span>
                     </div>
-                    <p className="text-muted small mb-0">
+                    <p className="footer-muted small mb-0">
                         © {new Date().getFullYear()} JobTrack - Professional Job
                         Application Tracker
                     </p>

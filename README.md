@@ -48,6 +48,18 @@ This project demonstrates modern full-stack development using the MERN stack (Mo
 - **Search & Filter**: Find questions by company, role, or keyword
 - **Community Knowledge Base**: Learn from real interview experiences
 
+## 🎨 UI Palette & Design Rationale
+
+Palette (Bootstrap dark theme via `data-bs-theme="dark"`):
+
+- Background: `#0B0C10`; Cards/Surfaces: `#11131A`; Border: `#1F2430`
+- Text: `#E7E9F3`; Muted: `#9BA0B3`
+- Primary: `#6E56CF` (hover: `#5A45BA`); Accent: `#7C7AF4`
+- Feedback: Success `#39D98A`, Info `#4FB7FF`, Warning `#F4C15D`, Danger `#F2555A`
+- Typography: Inter (Google Fonts) as the neutral, highly legible base
+
+Why: minimalist, Linear/Cursor-inspired dark UI that keeps contrast high for readability, uses a single indigo primary for clear calls-to-action, and pairs with Inter for a modern, unobtrusive type feel.
+
 ## 📸 Screenshots
 
 ### Dashboard

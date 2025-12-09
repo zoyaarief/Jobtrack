@@ -1,104 +1,82 @@
 /* src/css/index.css */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-:root {
-    /* --- Deep Royal Blue Theme --- */
-    --primary-color: #0056b3;
-    --primary-hover: #004494;
-
-    --secondary-color: #6c757d;
-    --success-color: #198754;
-    --info-color: #0dcaf0;
-    --warning-color: #ffc107;
-    --danger-color: #dc3545;
-
-    --light-bg: #f8f9fa;
-    --bg-white: #ffffff;
-    --dark-text: #212529;
-    --muted-text: #6c757d;
-    --border-color: #dee2e6;
-
+:root[data-bs-theme="dark"] {
+    /* Custom palette */
+    --primary-color: #6e56cf;
+    --primary-hover: #5a45ba;
+    --secondary-color: #7c7af4;
+    --success-color: #39d98a;
+    --info-color: #4fb7ff;
+    --warning-color: #f4c15d;
+    --danger-color: #f2555a;
+    --light-bg: #0b0c10;
+    --bg-white: #11131a;
+    --dark-text: #e7e9f3;
+    --muted-text: #9ba0b3;
+    --border-color: #1f2430;
     --font-family-base: 'Inter', system-ui, -apple-system, sans-serif;
-
     --radius-sm: 4px;
     --radius-md: 8px;
     --radius-lg: 12px;
-    --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
-    --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+    --shadow-sm: 0 6px 16px rgba(0, 0, 0, 0.25);
+    --shadow-md: 0 16px 40px rgba(0, 0, 0, 0.35);
+
+    /* Bootstrap theme variables */
+    --bs-body-bg: var(--light-bg);
+    --bs-body-color: var(--dark-text);
+    --bs-body-font-family: var(--font-family-base);
+    --bs-primary: var(--primary-color);
+    --bs-primary-rgb: 110, 86, 207;
+    --bs-secondary: var(--secondary-color);
+    --bs-secondary-rgb: 124, 122, 244;
+    --bs-success: var(--success-color);
+    --bs-info: var(--info-color);
+    --bs-warning: var(--warning-color);
+    --bs-danger: var(--danger-color);
+    --bs-border-color: var(--border-color);
+    --bs-card-bg: var(--bg-white);
+    --bs-card-border-color: var(--border-color);
+    --bs-table-bg: var(--bg-white);
+    --bs-table-color: var(--dark-text);
+    --bs-dropdown-bg: var(--bg-white);
+    --bs-modal-bg: var(--bg-white);
+    --bs-link-color: var(--primary-color);
+    --bs-link-hover-color: var(--primary-hover);
+    --bs-heading-color: var(--dark-text);
+    --bs-input-bg: var(--bg-white);
+    --bs-input-border-color: var(--border-color);
+    --bs-input-focus-border-color: var(--primary-color);
+    --bs-input-focus-box-shadow: 0 0 0 0.25rem rgba(110, 86, 207, 0.35);
+    --bs-btn-bg: var(--primary-color);
+    --bs-btn-border-color: var(--primary-color);
+    --bs-btn-hover-bg: var(--primary-hover);
+    --bs-btn-hover-border-color: var(--primary-hover);
+    --bs-btn-active-bg: var(--primary-hover);
+    --bs-btn-active-border-color: var(--primary-hover);
 }
 
 body {
-    margin: 0;
-    font-family: var(--font-family-base);
-    font-size: 1rem;
-    line-height: 1.5;
-    color: var(--dark-text);
-    background-color: var(--light-bg);
     -webkit-font-smoothing: antialiased;
 }
 
-button { font-family: inherit; }
-
-h1, h2, h3, h4, h5, h6 {
-    margin-top: 0;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-    line-height: 1.2;
-}
-
-/* 1. Primary Buttons (Filled) */
-.btn-primary {
-    background-color: var(--primary-color) !important;
-    border-color: var(--primary-color) !important;
-}
-.btn-primary:hover, .btn-primary:active, .btn-primary:focus {
-    background-color: var(--primary-hover) !important;
-    border-color: var(--primary-hover) !important;
-}
-
-/* 2. Outline Buttons */
-.btn-outline-primary {
-    color: var(--primary-color) !important;
-    border-color: var(--primary-color) !important;
-}
-.btn-outline-primary:hover,
-.btn-outline-primary:active,
-.btn-outline-primary.active {
-    background-color: var(--primary-color) !important;
-    border-color: var(--primary-color) !important;
-    color: white !important;
-}
-
-/* 3. List Groups (Questions List) */
 .list-group-item.active {
-    background-color: #ffffff !important;
+    background-color: var(--bg-white) !important;
     border-color: var(--primary-color) !important;
     color: var(--dark-text) !important;
     box-shadow: inset 4px 0 0 var(--primary-color);
 }
 
-/* 4. Tabs / Nav Pills (Question & Tips Buttons) */
-/* 💡 FIX: This forces the active tab to be your Royal Blue */
 .nav-pills .nav-link.active,
-.nav-pills .show > .nav-link {
+.nav-pills .show>.nav-link {
     background-color: var(--primary-color) !important;
     color: #ffffff !important;
 }
 
-/* Inactive tabs text color */
 .nav-link {
     color: var(--muted-text) !important;
 }
 
-/* Hover state for tabs */
 .nav-link:hover {
     color: var(--primary-color) !important;
-}
-
-/* 5. Text Utilities */
-.text-primary {
-    color: var(--primary-color) !important;
-}
-.text-muted {
-    color: var(--muted-text) !important;
 }

@@ -11,12 +11,12 @@
 .edit-title {
   font-size: 1.875rem;
   font-weight: 700;
-  color: var(--text-dark);
+  color: var(--dark-text);
   margin-bottom: 0.25rem;
 }
 
 .edit-subtitle {
-  color: var(--text-gray);
+  color: var(--muted-text);
   margin-bottom: 0;
 }
 
@@ -52,17 +52,17 @@
   justify-content: center;
   width: 80px;
   height: 80px;
-  background: var(--bg-light);
-  color: var(--text-light);
+  background: var(--bg-white);
+  color: var(--muted-text);
   border-radius: 50%;
   margin-bottom: 1rem;
 }
 
 .error-title {
-  color: var(--text-gray);
+  color: var(--muted-text);
   margin-bottom: 0.5rem;
 }
 
 .error-message {
-  color: var(--text-light);
+  color: var(--muted-text);
 }

@@ -42,7 +42,7 @@
     height: 60px;
     padding: 8px;
     border-radius: 10px;
-    background: var(--light-bg);
+    background: #161a24;
     object-fit: contain;
     margin-bottom: 1rem;
     display: flex;
