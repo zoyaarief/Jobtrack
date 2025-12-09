@@ -4,7 +4,7 @@
    If we are in development (localhost), use the proxy.
 --------------------------------------------------------------------------- */
 const BASE_URL = import.meta.env.PROD
-    ? "https://jobtrack-backend.onrender.com" 
+    ? "https://jobtrack-backend.onrender.com"
     : "";
 
 const defaultHeaders = {

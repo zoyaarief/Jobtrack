@@ -1,133 +1,64 @@
-/* Shared Component Styles */
+/* src/css/shared.css */
 
-/* Modern Card Styles */
+/* Modern Card */
 .card-modern {
-  background: var(--bg-white);
-  border: 1px solid var(--border-light);
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.2s ease;
+    background: var(--bg-white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.2s ease;
 }
 
 .card-modern:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--shadow-md);
 }
 
 .card-modern .card-header {
-  background: linear-gradient(
-    135deg,
-    var(--primary-color),
-    var(--secondary-color)
-  );
-  color: white;
-  border: none;
-  padding: 1rem;
-  font-weight: 600;
+    background: var(--light-bg);
+    color: var(--dark-text);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem;
+    font-weight: 600;
 }
 
-/* Modern Button Styles */
+/* Modern Buttons */
 .btn-modern {
-  border-radius: 6px;
-  font-weight: 500;
-  padding: 0.5rem 1rem;
-  transition: all 0.2s ease;
-  border: none;
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border: none;
+    transition: all 0.2s ease;
 }
 
 .btn-primary-modern {
-  background: linear-gradient(
-    135deg,
-    var(--primary-color),
-    var(--secondary-color)
-  );
-  color: white;
+    background: var(--primary-color);
+    color: white;
 }
 
 .btn-primary-modern:hover {
-  background: linear-gradient(
-    135deg,
-    var(--secondary-color),
-    var(--primary-color)
-  );
-  transform: translateY(-1px);
+    background: var(--primary-hover);
+    transform: translateY(-1px);
 }
 
 .btn-secondary-modern {
-  background: linear-gradient(135deg, #f093fb, #f5576c);
-  color: white;
+    background: var(--secondary-color); /* Fixed: Was pink gradient */
+    color: white;
 }
 
 .btn-success-modern {
-  background: linear-gradient(135deg, #48bb78, #38a169);
-  color: white;
+    background: var(--success-color);
+    color: white;
 }
 
-/* Form Styles */
+/* Form Controls */
 .form-modern .form-control {
-  border: 1px solid var(--border-light);
-  border-radius: 6px;
-  padding: 0.5rem 0.75rem;
-  transition: border-color 0.2s ease;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 0.6rem 0.75rem;
 }
 
 .form-modern .form-control:focus {
-  border-color: var(--primary-color);
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+    outline: none;
 }
-
-.form-modern .form-label {
-  font-weight: 500;
-  color: var(--text-dark);
-  margin-bottom: 0.5rem;
-}
-
-/* Status Badges */
-.badge-modern {
-  border-radius: 4px;
-  font-weight: 500;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-}
-
-.badge-applied {
-  background: linear-gradient(135deg, var(--success-color), #38a169);
-  color: white;
-}
-
-.badge-interview {
-  background: linear-gradient(135deg, var(--warning-color), #dd6b20);
-  color: white;
-}
-
-.badge-rejected {
-  background: linear-gradient(135deg, var(--danger-color), #e53e3e);
-  color: white;
-}
-
-.badge-pending {
-  background: linear-gradient(135deg, var(--info-color), #3182ce);
-  color: white;
-}
-
-.add-experience-modal .modal-content {
-    border-radius: 16px;
-    padding: 10px 20px;
-}
-
-.add-experience-modal .modal-body {
-    max-height: 70vh;
-    overflow-y: auto;
-}
-
-.add-experience-modal textarea {
-    font-size: 0.95rem;
-    line-height: 1.5;
-}
-
-.add-experience-modal .form-label {
-    font-weight: 600;
-    color: #333;
-}
-

@@ -1,147 +1,104 @@
 /* src/css/index.css */
-
-/* 1. Import Font (Inter) */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
-    /* --- 2. Color Palette (Material Design / Bootstrap hybrid) --- */
-    --primary-color: #0d6efd;       /* Primary Action Blue */
-    --primary-hover: #0b5ed7;
-    --secondary-color: #6c757d;     /* Secondary Gray */
-    --success-color: #198754;       /* Success Green */
-    --danger-color: #dc3545;        /* Danger Red */
-    --light-bg: #f8f9fa;            /* Light Background */
-    --dark-text: #212529;           /* High Emphasis Text */
-    --muted-text: #6c757d;          /* Medium Emphasis Text */
+    /* --- Deep Royal Blue Theme --- */
+    --primary-color: #0056b3;
+    --primary-hover: #004494;
+
+    --secondary-color: #6c757d;
+    --success-color: #198754;
+    --info-color: #0dcaf0;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+
+    --light-bg: #f8f9fa;
+    --bg-white: #ffffff;
+    --dark-text: #212529;
+    --muted-text: #6c757d;
     --border-color: #dee2e6;
 
-    /* --- 3. Typography System (Material Design Scale) --- */
     --font-family-base: 'Inter', system-ui, -apple-system, sans-serif;
 
-    /* Headings (High Emphasis) */
-    --font-size-h1: 2.5rem;   /* 40px - Display Large */
-    --font-weight-h1: 700;
-    --line-height-h1: 1.2;
-
-    --font-size-h2: 2.0rem;   /* 32px - Display Medium */
-    --font-weight-h2: 600;
-    --line-height-h2: 1.25;
-
-    --font-size-h3: 1.75rem;  /* 28px - Display Small */
-    --font-weight-h3: 600;
-    --line-height-h3: 1.3;
-
-    --font-size-h4: 1.5rem;   /* 24px - Headline Medium */
-    --font-weight-h4: 500;
-    --line-height-h4: 1.35;
-
-    /* Body Text (Readability Focus) */
-    --font-size-body: 1rem;   /* 16px - Standard Body */
-    --font-weight-body: 400;
-    --line-height-body: 1.5;  /* Optimal readability */
-
-    --font-size-small: 0.875rem; /* 14px - Helper text */
-    --font-weight-small: 400;
-
-    /* Spacing System (8px Grid) */
-    --spacer-1: 0.5rem;  /* 8px */
-    --spacer-2: 1rem;    /* 16px */
-    --spacer-3: 1.5rem;  /* 24px */
-    --spacer-4: 2rem;    /* 32px */
-    --spacer-5: 3rem;    /* 48px */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-/* --- 4. Global Reset & Base Styles --- */
 body {
     margin: 0;
     font-family: var(--font-family-base);
-    font-size: var(--font-size-body);
-    line-height: var(--line-height-body);
+    font-size: 1rem;
+    line-height: 1.5;
     color: var(--dark-text);
     background-color: var(--light-bg);
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
 }
 
-/* --- 5. Typography Utility Classes --- */
-h1, .display-1 {
-    font-size: var(--font-size-h1);
-    font-weight: var(--font-weight-h1);
-    line-height: var(--line-height-h1);
-    margin-bottom: var(--spacer-3);
-    letter-spacing: -0.02em; /* Tight tracking for large text */
+button { font-family: inherit; }
+
+h1, h2, h3, h4, h5, h6 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    line-height: 1.2;
 }
 
-h2, .display-2 {
-    font-size: var(--font-size-h2);
-    font-weight: var(--font-weight-h2);
-    line-height: var(--line-height-h2);
-    margin-bottom: var(--spacer-2);
-    letter-spacing: -0.01em;
-}
-
-h3, .display-3 {
-    font-size: var(--font-size-h3);
-    font-weight: var(--font-weight-h3);
-    line-height: var(--line-height-h3);
-    margin-bottom: var(--spacer-2);
-}
-
-h4, h5, h6 {
-    font-size: var(--font-size-h4);
-    font-weight: var(--font-weight-h4);
-    line-height: var(--line-height-h4);
-    margin-bottom: var(--spacer-2);
-}
-
-p {
-    margin-bottom: var(--spacer-2);
-    max-width: 70ch; /* Readability constraint: ~70 chars per line */
-}
-
-.text-muted {
-    color: var(--muted-text) !important;
-}
-
-.text-small {
-    font-size: var(--font-size-small);
-}
-
-/* --- 6. Component Consistency (Rubric Requirement) --- */
-
-/* Consistent Buttons */
-.btn {
-    font-family: var(--font-family-base);
-    font-weight: 500;
-    letter-spacing: 0.01em; /* Slight spacing for buttons */
-    padding: 0.5rem 1rem;
-    border-radius: 4px; /* Material Design standard rounded corners */
-    transition: all 0.2s ease-in-out;
-}
-
+/* 1. Primary Buttons (Filled) */
 .btn-primary {
     background-color: var(--primary-color) !important;
     border-color: var(--primary-color) !important;
 }
-
-.btn-primary:hover {
+.btn-primary:hover, .btn-primary:active, .btn-primary:focus {
     background-color: var(--primary-hover) !important;
+    border-color: var(--primary-hover) !important;
 }
 
-.btn-danger {
-    background-color: var(--danger-color) !important;
-    border-color: var(--danger-color) !important;
+/* 2. Outline Buttons */
+.btn-outline-primary {
+    color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+.btn-outline-primary:hover,
+.btn-outline-primary:active,
+.btn-outline-primary.active {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+    color: white !important;
 }
 
-/* Card Styling (Material Surface) */
-.card, .card-modern {
-    border: 1px solid var(--border-color);
-    border-radius: 8px; /* Material standard */
-    background-color: white;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Low elevation */
-    transition: box-shadow 0.3s ease;
+/* 3. List Groups (Questions List) */
+.list-group-item.active {
+    background-color: #ffffff !important;
+    border-color: var(--primary-color) !important;
+    color: var(--dark-text) !important;
+    box-shadow: inset 4px 0 0 var(--primary-color);
 }
 
-.card:hover, .card-modern:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* Lift on hover */
+/* 4. Tabs / Nav Pills (Question & Tips Buttons) */
+/* 💡 FIX: This forces the active tab to be your Royal Blue */
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+    background-color: var(--primary-color) !important;
+    color: #ffffff !important;
+}
+
+/* Inactive tabs text color */
+.nav-link {
+    color: var(--muted-text) !important;
+}
+
+/* Hover state for tabs */
+.nav-link:hover {
+    color: var(--primary-color) !important;
+}
+
+/* 5. Text Utilities */
+.text-primary {
+    color: var(--primary-color) !important;
+}
+.text-muted {
+    color: var(--muted-text) !important;
 }

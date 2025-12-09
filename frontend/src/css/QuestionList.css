@@ -1,10 +1,5 @@
-:root {
-    --primary: #007bff;
-}
+/* src/css/QuestionList.css */
 
-/* ============================
-   LAYOUT (Two-Panel)
-=============================== */
 .interview-layout {
     display: grid;
     grid-template-columns: 30% 70%;
@@ -13,64 +8,62 @@
     min-height: 70vh;
 }
 
-/* ============================
-   LEFT PANEL (Question List)
-=============================== */
 .interview-list {
-    background: #f8f9fa;
-    border-radius: 12px;
+    background: var(--light-bg);
+    border-radius: var(--radius-lg);
     padding: 1rem;
+    box-shadow: var(--shadow-sm);
     overflow-y: auto;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    max-height: 75vh;
 }
 
-.interview-item {
-    padding: 0.8rem 1rem;
-    border-radius: 10px;
+/* 💡 FIX: Targeted Bootstrap class directly to sync with index.css */
+.list-group-item {
+    padding: 0.8rem 1rem !important;
+    border-radius: var(--radius-md) !important;
     margin-bottom: 0.5rem;
-    background: #fff;
     border: 1px solid transparent;
     transition: all 0.2s ease;
     cursor: pointer;
 }
 
-.interview-item:hover {
-    border-color: var(--primary);
-    background: #f3f6ff;
+.list-group-item:hover {
+    border-color: var(--primary-color);
+    background-color: #f8f9fa; /* Very subtle grey on hover */
 }
 
-.interview-item.active {
-    background: #eaf2ff;
-    border-color: var(--primary);
+/* 💡 FIX: Active State is now controlled by index.css
+   We only add specific text coloring here */
+.list-group-item.active .question-title {
+    color: var(--primary-color) !important; /* Title turns blue */
+}
+
+.list-group-item.active .role-label {
+    color: var(--muted-text) !important; /* Role stays muted */
 }
 
 .question-title {
     font-size: 1rem;
     font-weight: 600;
-    color: #222;
-    margin-bottom: 0.2rem;
+    color: var(--dark-text);
 }
 
 .role-label {
     font-size: 0.85rem;
-    color: #888;
+    color: var(--muted-text);
 }
 
-/* ============================
-   RIGHT PANEL (Details)
-=============================== */
+/* Right Panel */
 .interview-detail {
-    background: #fff;
-    border-radius: 12px;
+    background: var(--bg-white);
+    border-radius: var(--radius-lg);
     padding: 2rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-color);
     position: relative;
     min-height: 300px;
 }
 
-/* ============================
-   ACTION BUTTONS (Edit/Delete)
-=============================== */
 .top-action-buttons {
     position: absolute;
     top: 1.2rem;
@@ -83,40 +76,20 @@
     font-size: 0.9rem;
     padding: 6px 10px;
     border-radius: 6px;
-    border: 1px solid #d1d5db;
+    border: 1px solid var(--border-color);
     background: #fff;
     cursor: pointer;
     transition: all 0.2s ease;
 }
 
-.action-btn:hover {
-    transform: translateY(-1px);
-}
+.action-btn:hover { transform: translateY(-1px); }
 
-/* Edit */
-.action-btn.edit-btn {
-    color: #3b6ef0;
-    border-color: #6c8ef0;
-}
+.action-btn.edit-btn { color: var(--primary-color); border-color: var(--primary-color); }
+.action-btn.edit-btn:hover { background: var(--primary-color); color: #fff; }
 
-.action-btn.edit-btn:hover {
-    background: #eef3ff;
-}
+.action-btn.delete-btn { color: var(--danger-color); border-color: var(--danger-color); }
+.action-btn.delete-btn:hover { background: var(--danger-color); color: #fff; }
 
-/* Delete */
-.action-btn.delete-btn {
-    color: #e74c3c;
-    border-color: #e74c3c;
-}
-
-.action-btn.delete-btn:hover {
-    background: #e74c3c;
-    color: #fff;
-}
-
-/* ============================
-   TABS
-=============================== */
 .tab-header {
     display: flex;
     gap: 1rem;
@@ -131,61 +104,43 @@
     padding: 0.6rem 1rem;
     font-weight: 500;
     cursor: pointer;
-    color: #6c757d;
+    color: var(--muted-text);
     border-bottom: 2px solid transparent;
     transition: 0.2s ease;
 }
 
 .tab-btn.active {
-    color: var(--primary);
-    border-bottom-color: var(--primary);
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
 }
 
-.tab-btn:hover {
-    background: #f8f9fa;
-}
+.tab-btn:hover { background: #f8f9fa; }
 
-/* ============================
-   QUESTION + TIP DETAILS
-=============================== */
 .question-heading {
     font-size: 1.25rem;
     font-weight: 700;
-    color: #111;
+    color: var(--dark-text);
     margin-bottom: 1rem;
 }
 
-.role-info,
-.difficulty {
+.role-info, .difficulty {
     font-size: 0.9rem;
-    color: #666;
+    color: var(--muted-text);
 }
 
-/* ============================
-   PLACEHOLDER (When no item selected)
-=============================== */
 .placeholder {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #6c757d;
+    color: var(--muted-text);
     font-size: 1.05rem;
     font-style: italic;
     min-height: 300px;
     text-align: center;
-    background: none;
-    border: none;
+    background: transparent !important;
 }
 
-/* ============================
-   RESPONSIVENESS
-=============================== */
 @media (max-width: 900px) {
-    .interview-layout {
-        grid-template-columns: 1fr;
-    }
-
-    .interview-list {
-        max-height: 250px;
-    }
+    .interview-layout { grid-template-columns: 1fr; }
+    .interview-list { max-height: 250px; }
 }
