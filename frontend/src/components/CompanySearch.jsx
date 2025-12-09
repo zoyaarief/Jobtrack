@@ -6,15 +6,22 @@ export default function CompanySearch({ onSearch }) {
 
     function handleSubmit(e) {
         e.preventDefault();
-        if (query.trim()) {
-            onSearch(query.trim()); // ✅ stays in InterviewHub, no redirect
-        }
+        const trimmed = query.trim();
+        if (trimmed.length === 0) return; // prevent empty search
+        onSearch(trimmed);
+    }
+
+    function clearSearch() {
+        setQuery("");
+        onSearch(""); // optional: resets list
     }
 
     return (
         <form
             onSubmit={handleSubmit}
             className="d-flex justify-content-center align-items-center mt-3 mb-4 gap-2"
+            role="search"
+            aria-label="Company search"
         >
             <input
                 type="text"
@@ -22,10 +29,23 @@ export default function CompanySearch({ onSearch }) {
                 placeholder="🔍 Search for a company..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
+                aria-label="Search companies"
             />
+
             <button type="submit" className="btn btn-primary">
                 Search
             </button>
+
+            {query.length > 0 && (
+                <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={clearSearch}
+                    aria-label="Clear search"
+                >
+                    Clear
+                </button>
+            )}
         </form>
     );
 }

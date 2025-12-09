@@ -8,6 +8,7 @@ export default function Topbar({ user, onLogout }) {
     const location = useLocation();
     const isLogin = location.pathname === "/login";
     const isRegister = location.pathname === "/register";
+    const isInterviewHubActive = location.pathname.startsWith("/interview-hub");
 
     return (
         <Navbar expand="md" className="navbar-modern sticky-top">
@@ -23,8 +24,10 @@ export default function Topbar({ user, onLogout }) {
                             Dashboard
                         </Nav.Link>
 
-
-                        <Nav.Link as={NavLink} to="/interview-hub" end>
+                        <Nav.Link
+                            href="/interview-hub"
+                            className={isInterviewHubActive ? 'active' : ''}
+                        >
                             <FiGlobe className="me-1" />
                             Interview Hub
                         </Nav.Link>
@@ -40,12 +43,12 @@ export default function Topbar({ user, onLogout }) {
                     <div className="d-flex align-items-center gap-3">
                         {user ? (
                             <>
-                <span className="text-muted">
-                  Welcome,{" "}
-                    {user.firstName
-                        ? `${user.firstName} ${user.lastName || ""}`.trim()
-                        : user.username}
-                </span>
+                                <span className="text-muted">
+                                    Welcome,{" "}
+                                    {user.firstName
+                                        ? `${user.firstName} ${user.lastName || ""}`.trim()
+                                        : user.username}
+                                </span>
                                 <Button size="sm" variant="outline-danger" onClick={onLogout}>
                                     <FiLogOut className="me-1" />
                                     Logout
@@ -83,6 +86,7 @@ Topbar.propTypes = {
         firstName: PropTypes.string,
         lastName: PropTypes.string,
         username: PropTypes.string,
+        email: PropTypes.string,
     }),
     onLogout: PropTypes.func.isRequired,
 };

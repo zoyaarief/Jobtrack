@@ -2,6 +2,9 @@
     --primary: #007bff;
 }
 
+/* ============================
+   LAYOUT (Two-Panel)
+=============================== */
 .interview-layout {
     display: grid;
     grid-template-columns: 30% 70%;
@@ -10,9 +13,11 @@
     min-height: 70vh;
 }
 
-/* LEFT PANEL */
+/* ============================
+   LEFT PANEL (Question List)
+=============================== */
 .interview-list {
-    background: var(--bg-light, #f8f9fa);
+    background: #f8f9fa;
     border-radius: 12px;
     padding: 1rem;
     overflow-y: auto;
@@ -23,7 +28,7 @@
     padding: 0.8rem 1rem;
     border-radius: 10px;
     margin-bottom: 0.5rem;
-    background: white;
+    background: #fff;
     border: 1px solid transparent;
     transition: all 0.2s ease;
     cursor: pointer;
@@ -51,17 +56,21 @@
     color: #888;
 }
 
-/* RIGHT PANEL */
+/* ============================
+   RIGHT PANEL (Details)
+=============================== */
 .interview-detail {
-    flex: 1;
     background: #fff;
     border-radius: 12px;
     padding: 2rem;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     position: relative;
+    min-height: 300px;
 }
 
-/* ✅ Top-right Edit/Delete Buttons */
+/* ============================
+   ACTION BUTTONS (Edit/Delete)
+=============================== */
 .top-action-buttons {
     position: absolute;
     top: 1.2rem;
@@ -71,15 +80,12 @@
 }
 
 .action-btn {
-    font-size: 0.85rem;
-    padding: 4px 10px;
+    font-size: 0.9rem;
+    padding: 6px 10px;
     border-radius: 6px;
     border: 1px solid #d1d5db;
     background: #fff;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 4px;
     transition: all 0.2s ease;
 }
 
@@ -87,32 +93,36 @@
     transform: translateY(-1px);
 }
 
-.edit-btn {
-    color: #374151;
-    border-color: #d1d5db;
+/* Edit */
+.action-btn.edit-btn {
+    color: #3b6ef0;
+    border-color: #6c8ef0;
 }
 
-.edit-btn:hover {
-    background: #f1f5f9;
+.action-btn.edit-btn:hover {
+    background: #eef3ff;
 }
 
-.delete-btn {
-    color: #dc3545;
-    border-color: #dc3545;
+/* Delete */
+.action-btn.delete-btn {
+    color: #e74c3c;
+    border-color: #e74c3c;
 }
 
-.delete-btn:hover {
-    background: #dc3545;
+.action-btn.delete-btn:hover {
+    background: #e74c3c;
     color: #fff;
 }
 
-/* Tabs */
+/* ============================
+   TABS
+=============================== */
 .tab-header {
     display: flex;
     gap: 1rem;
     border-bottom: 1px solid #ddd;
     margin-bottom: 1rem;
-    margin-top: 2.5rem; /* space for top buttons */
+    margin-top: 2.5rem;
 }
 
 .tab-btn {
@@ -123,7 +133,7 @@
     cursor: pointer;
     color: #6c757d;
     border-bottom: 2px solid transparent;
-    transition: 0.2s;
+    transition: 0.2s ease;
 }
 
 .tab-btn.active {
@@ -131,60 +141,51 @@
     border-bottom-color: var(--primary);
 }
 
-/* Question details */
+.tab-btn:hover {
+    background: #f8f9fa;
+}
+
+/* ============================
+   QUESTION + TIP DETAILS
+=============================== */
 .question-heading {
     font-size: 1.25rem;
     font-weight: 700;
     color: #111;
     margin-bottom: 1rem;
-    line-height: 1.6;
 }
 
 .role-info,
 .difficulty {
     font-size: 0.9rem;
     color: #666;
-    margin-top: 0.5rem;
 }
 
-/* Placeholder */
+/* ============================
+   PLACEHOLDER (When no item selected)
+=============================== */
 .placeholder {
-    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
     color: #6c757d;
     font-size: 1.05rem;
-    background: transparent !important;
-    box-shadow: none !important;
-    border: none !important;
-    min-height: 300px;
-}
-
-.placeholder p {
-    margin: 0;
-    color: #6c757d;
     font-style: italic;
+    min-height: 300px;
+    text-align: center;
+    background: none;
+    border: none;
 }
 
-/* small top-right action buttons */
-.interview-detail { position: relative; }
-.top-action-buttons {
-    position: absolute;
-    right: 1.25rem;
-    top: 1.25rem;
-    display: flex;
-    gap: 0.25rem;
-}
-.action-btn {
-    border: 1px solid #ddd;
-    background: #fff;
-    padding: 6px 8px;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    cursor: pointer;
-}
-.action-btn.delete-btn { border-color: #e74c3c; color: #e74c3c; }
-.action-btn.edit-btn { border-color: #6c8ef0; color: #3b6ef0; }
+/* ============================
+   RESPONSIVENESS
+=============================== */
+@media (max-width: 900px) {
+    .interview-layout {
+        grid-template-columns: 1fr;
+    }
 
+    .interview-list {
+        max-height: 250px;
+    }
+}

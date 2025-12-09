@@ -1,184 +1,313 @@
 // src/components/QuestionList.jsx
-import React, { useEffect, useState } from "react";
+
+import React, { useEffect, useState, useCallback } from "react";
 import PropTypes from "prop-types";
+import { Tab, Nav, Pagination, Form, Badge } from "react-bootstrap";
+import { FiEdit2, FiTrash2, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import "../css/QuestionList.css";
 import AddExperienceModal from "./AddExperienceModal";
+import { api } from "../api.js";
 
-export default function QuestionList({ company }) {
+// Constants
+const QUESTIONS_PER_PAGE = 10;
+
+export default function QuestionList({ company, token, user }) {
     const [questions, setQuestions] = useState([]);
     const [selected, setSelected] = useState(null);
     const [activeTab, setActiveTab] = useState("question");
     const [showEditModal, setShowEditModal] = useState(false);
-    const [token, setToken] = useState(""); // ✅ Changed to state
-    const [userEmail, setUserEmail] = useState(""); // ✅ Added state for userEmail
 
-    // ✅ Get token and userEmail in useEffect (client-side only)
-    useEffect(() => {
-        if (typeof window !== 'undefined' && window.localStorage) {
-            setToken(localStorage.getItem("token") || "");
-            setUserEmail(localStorage.getItem("userEmail") || "");
-        }
-    }, []);
+    // PAGINATION AND SORTING STATE
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [totalQuestions, setTotalQuestions] = useState(0);
+    const [sortOrder, setSortOrder] = useState("recent");
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
-    useEffect(() => {
-        async function fetchQuestions() {
-            try {
-                const res = await fetch(
-                    `/api/questions?company=${encodeURIComponent(company)}`
-                );
-                const data = await res.json();
-                setQuestions(data || []);
-            } catch (err) {
-                console.error("Failed to fetch questions:", err);
-            }
-        }
-        if (company) {
-            fetchQuestions();
-            setSelected(null);
-        }
-    }, [company]);
+    // Helper to parse the question details
+    const parseQuestionDetail = (q) => {
+        const detail = q.questionDetail || "";
+        const tips = /Tips:\s*([\s\S]*)/i.exec(detail)?.[1]?.split("Difficulty:")[0]?.trim() || "";
+        const description = detail.split("Tips:")[0]?.trim() || "";
+        const difficulty = /Difficulty:\s*(Easy|Medium|Hard)/i.exec(detail)?.[1] || "";
 
-    async function handleDelete(id) {
-        if (!window.confirm("Are you sure you want to delete this experience?")) return;
+        return {
+            ...q,
+            description,
+            tips,
+            difficulty,
+        };
+    };
+
+    // ------------------------------------------------
+    // FETCH QUESTIONS
+    // ------------------------------------------------
+    const fetchQuestions = useCallback(async () => {
+        setLoading(true);
+        setError("");
+        setSelected(null);
+
         try {
-            const res = await fetch(`/api/questions/${id}`, {
-                method: "DELETE",
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-            });
+            const data = await api.questions.listByCompany(
+                company,
+                currentPage,
+                QUESTIONS_PER_PAGE,
+                sortOrder
+            );
 
-            if (res.status === 403) {
-                alert("You are not authorized to delete this item.");
-                return;
+            let rawQuestions = [];
+            let totalQ = 0;
+            let totalP = 1;
+
+            if (Array.isArray(data)) {
+                // Handle legacy backend response
+                rawQuestions = data;
+                totalQ = data.length;
+                totalP = 1;
+            } else if (data && Array.isArray(data.questions)) {
+                // Handle new paginated response
+                rawQuestions = data.questions;
+                totalQ = data.totalQuestions || 0;
+                totalP = data.totalPages || 1;
             }
-            if (!res.ok) throw new Error("Failed to delete question");
 
-            setQuestions((prev) => prev.filter((q) => q._id !== id));
-            setSelected(null);
-            alert("Experience deleted successfully!");
+            const parsedQuestions = rawQuestions.map(parseQuestionDetail);
+
+            setQuestions(parsedQuestions);
+            setTotalPages(totalP);
+            setTotalQuestions(totalQ);
+
         } catch (err) {
-            console.error("Delete failed:", err);
-            alert("Failed to delete experience. Try again later.");
+            console.error("Fetch error:", err);
+            setError(err.message || "Failed to load questions.");
+            setQuestions([]);
+        } finally {
+            setLoading(false);
         }
-    }
+    }, [company, currentPage, sortOrder]);
 
-    function handleEdit() {
-        setShowEditModal(true);
-    }
+    useEffect(() => {
+        fetchQuestions();
+    }, [fetchQuestions]);
 
-    async function handleEditSubmit(updatedForm) {
+    // ------------------------------------------------
+    // HANDLERS
+    // ------------------------------------------------
+    const handleSortChange = (e) => {
+        setSortOrder(e.target.value);
+        setCurrentPage(1);
+    };
+
+    const handleSelectQuestion = (q) => {
+        setSelected(q);
+        setActiveTab("question");
+    };
+
+    const handleEditSubmit = async (formData) => {
+        if (!token) return alert("You must be logged in.");
         try {
-            const res = await fetch(`/api/questions/${selected._id}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`,
-                },
-                body: JSON.stringify(updatedForm),
-            });
-
-            if (res.status === 403) {
-                alert("You are not authorized to edit this item.");
-                return;
-            }
-            if (!res.ok) throw new Error("Failed to update experience");
-
-            const updated = { ...selected, ...updatedForm };
-
-            setQuestions((prev) => prev.map((q) => (q._id === updated._id ? updated : q)));
-            setSelected(updated);
-            setShowEditModal(false);
+            await api.questions.update(token, selected._id, formData);
             alert("Experience updated successfully!");
+            setShowEditModal(false);
+            fetchQuestions();
+            // Update local selection to reflect changes immediately
+            setSelected(prev => parseQuestionDetail({ ...prev, ...formData }));
         } catch (err) {
-            console.error("Update failed:", err);
-            alert("Failed to update experience. Try again later.");
+            alert(err.message);
         }
-    }
+    };
 
-    if (!questions.length) {
+    const handleDelete = async () => {
+        if (!token) return alert("You must be logged in.");
+        if (window.confirm("Delete this experience?")) {
+            try {
+                await api.questions.remove(token, selected._id);
+                alert("Deleted successfully!");
+                fetchQuestions();
+            } catch (err) {
+                alert(err.message);
+            }
+        }
+    };
+
+    // ------------------------------------------------
+    // PAGINATION RENDER FUNCTION
+    // ------------------------------------------------
+    const renderPagination = () => {
+        if (totalPages <= 1) return null;
+
+        const items = [];
+        const maxPagesToShow = 5;
+        let startPage, endPage;
+
+        if (totalPages <= maxPagesToShow) {
+            startPage = 1;
+            endPage = totalPages;
+        } else if (currentPage <= Math.ceil(maxPagesToShow / 2)) {
+            startPage = 1;
+            endPage = maxPagesToShow;
+        } else if (currentPage + Math.floor(maxPagesToShow / 2) >= totalPages) {
+            startPage = totalPages - maxPagesToShow + 1;
+            endPage = totalPages;
+        } else {
+            startPage = currentPage - Math.floor(maxPagesToShow / 2);
+            endPage = currentPage + Math.floor(maxPagesToShow / 2);
+        }
+
+        for (let number = startPage; number <= endPage; number++) {
+            items.push(
+                <Pagination.Item
+                    key={number}
+                    active={number === currentPage}
+                    onClick={() => setCurrentPage(number)}
+                >
+                    {number}
+                </Pagination.Item>
+            );
+        }
+
         return (
-            <div className="text-center mt-5">
-                <p className="text-muted">No questions found for {company} yet.</p>
-            </div>
+            <Pagination className="mt-3 justify-content-center">
+                <Pagination.Prev
+                    onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                    disabled={currentPage === 1}
+                />
+                {items}
+                <Pagination.Next
+                    onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                    disabled={currentPage === totalPages}
+                />
+            </Pagination>
         );
-    }
+    };
+
+    // Permission check
+    const canEdit = user && selected && (user.email === selected.userEmail);
 
     return (
-        <>
-            <div className="interview-layout">
-                {/* LEFT COLUMN */}
-                <div className="interview-list">
+        <div className="question-list-container row">
+            {/* LEFT SIDE: LIST */}
+            <div className="col-md-5">
+                <div className="question-list-container card p-3 shadow-sm">
                     <div className="d-flex justify-content-between align-items-center mb-3">
-                        <h3 className="fw-bold mb-0">Questions for {company}</h3>
-                    </div>
-                    {questions.map((q) => (
-                        <div
-                            key={q._id}
-                            className={`interview-item ${selected?._id === q._id ? "active" : ""}`}
-                            onClick={() => setSelected(q)}
-                        >
-                            <div className="question-title fw-semibold">
-                                {q.questionTitle || "Untitled Question"}
-                            </div>
-                            <div className="role-label text-muted small">
-                                {q.role || "Unknown Role"}
-                            </div>
-                        </div>
-                    ))}
-                </div>
+                        <h4 className="fw-semibold mb-0">
+                            Questions ({totalQuestions})
+                        </h4>
 
-                {/* RIGHT COLUMN */}
-                <div className="interview-detail">
-                    {selected ? (
-                        <>
-                            {/* top-right small action buttons - ✅ Use userEmail state */}
-                            {selected.userEmail === userEmail && userEmail && (
-                                <div className="top-action-buttons">
-                                    <button className="action-btn edit-btn" onClick={handleEdit}>
-                                        ✏️
+                        <Form.Group style={{ width: '150px' }}>
+                            <Form.Select
+                                value={sortOrder}
+                                onChange={handleSortChange}
+                                aria-label="Sort questions"
+                                size="sm"
+                            >
+                                <option value="recent">Sort: Latest</option>
+                                <option value="oldest">Sort: Oldest</option>
+                            </Form.Select>
+                        </Form.Group>
+                    </div>
+
+                    {loading ? (
+                        <p className="text-center text-muted py-4">Loading questions...</p>
+                    ) : questions.length === 0 ? (
+                        <p className="text-center text-muted py-4">No questions found. Be the first to add one!</p>
+                    ) : (
+                        <ul className="list-unstyled list-group question-list">
+                            {questions.map((q) => (
+                                <li
+                                    key={q._id}
+                                    className={`list-group-item list-group-item-action ${selected?._id === q._id ? 'active' : ''}`}
+                                    onClick={() => handleSelectQuestion(q)}
+                                    style={{ cursor: 'pointer' }}
+                                >
+                                    <div className="d-flex justify-content-between">
+                                        <span className="fw-medium">{q.questionTitle}</span>
+                                        {q.difficulty && (
+                                            <Badge bg={q.difficulty === 'Easy' ? 'success' : q.difficulty === 'Medium' ? 'warning' : 'danger'} className="text-uppercase ms-1">
+                                                {q.difficulty}
+                                            </Badge>
+                                        )}
+                                    </div>
+                                    <div className="small text-muted mt-1">
+                                        {/* 💡 FIX: Prioritize username, else fall back to email or Anonymous */}
+                                        {q.role} • {q.username || (q.userEmail ? q.userEmail.split('@')[0] : 'Anonymous')}
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+
+                    {renderPagination()}
+                </div>
+            </div>
+
+            {/* RIGHT SIDE: DETAIL */}
+            <div className="col-md-7">
+                {selected ? (
+                    <div className="card question-detail-card p-4 shadow-sm h-100">
+                        <div className="d-flex justify-content-between align-items-center mb-3">
+                            <h3 className="fw-bold mb-0">{selected.questionTitle}</h3>
+                            {canEdit && (
+                                <div className="d-flex gap-2">
+                                    <button
+                                        className="btn btn-sm btn-outline-primary d-flex align-items-center"
+                                        onClick={() => setShowEditModal(true)}
+                                    >
+                                        <FiEdit2 className="me-1" /> Edit
                                     </button>
-                                    <button className="action-btn delete-btn" onClick={() => handleDelete(selected._id)}>
-                                        🗑️
+                                    <button
+                                        className="btn btn-sm btn-outline-danger d-flex align-items-center"
+                                        onClick={handleDelete}
+                                    >
+                                        <FiTrash2 className="me-1" /> Delete
                                     </button>
                                 </div>
                             )}
-
-                            <div className="tab-header">
-                                <button className={`tab-btn ${activeTab === "question" ? "active" : ""}`} onClick={() => setActiveTab("question")}>
-                                    Question
-                                </button>
-                                <button className={`tab-btn ${activeTab === "tips" ? "active" : ""}`} onClick={() => setActiveTab("tips")}>
-                                    Tips
-                                </button>
-                            </div>
-
-                            <div className="tab-content">
-                                {activeTab === "question" ? (
-                                    <>
-                                        <h2 className="question-heading mb-3">{selected.questionTitle}</h2>
-                                        <p className="text-muted mb-2"><strong>Difficulty:</strong> {selected.difficulty || "Not specified"}</p>
-                                        <p className="text-muted mb-3"><strong>Role:</strong> {selected.role}</p>
-                                        <p className="question-desc lh-base">{selected.questionDescription || "No detailed description provided."}</p>
-                                    </>
-                                ) : (
-                                    <>
-                                        <h4 className="fw-bold mb-2">Advice / Preparation</h4>
-                                        <p>{selected.tips || "No tips shared."}</p>
-                                    </>
-                                )}
-                            </div>
-                        </>
-                    ) : (
-                        <div className="placeholder text-center text-muted">
-                            <p>🔍 Select a question to view details.</p>
                         </div>
-                    )}
-                </div>
+
+                        <Tab.Container activeKey={activeTab} onSelect={(k) => setActiveTab(k)}>
+                            <Nav variant="pills" className="mb-3">
+                                <Nav.Item>
+                                    <Nav.Link eventKey="question">Question</Nav.Link>
+                                </Nav.Item>
+                                <Nav.Item>
+                                    <Nav.Link eventKey="tips">Tips</Nav.Link>
+                                </Nav.Item>
+                            </Nav>
+                            <Tab.Content>
+                                <Tab.Pane eventKey="question">
+                                    <div className="mb-3">
+                                        <span className="fw-bold">Role: </span> {selected.role || "N/A"}
+                                        <span className="mx-2">|</span>
+                                        <span className="fw-bold">Difficulty: </span>
+                                        {selected.difficulty || "N/A"}
+                                    </div>
+                                    <hr />
+                                    <div style={{ whiteSpace: "pre-wrap" }}>
+                                        {selected.description || "No description provided."}
+                                    </div>
+                                </Tab.Pane>
+                                <Tab.Pane eventKey="tips">
+                                    <h5 className="fw-bold">Advice / Tips</h5>
+                                    <div style={{ whiteSpace: "pre-wrap" }}>
+                                        {selected.tips || "No tips shared."}
+                                    </div>
+                                </Tab.Pane>
+                            </Tab.Content>
+                        </Tab.Container>
+                    </div>
+                ) : (
+                    <div className="placeholder text-center text-muted p-5 bg-light rounded shadow-sm h-100 d-flex align-items-center justify-content-center">
+                        <div>
+                            <p className="mb-0 fs-5">📝</p>
+                            <p>Select a question from the list to view details.</p>
+                        </div>
+                    </div>
+                )}
             </div>
 
-            {/* Edit Modal */}
+            {/* EDIT MODAL */}
             {selected && (
                 <AddExperienceModal
                     show={showEditModal}
@@ -187,10 +316,12 @@ export default function QuestionList({ company }) {
                     initialData={selected}
                 />
             )}
-        </>
+        </div>
     );
 }
 
 QuestionList.propTypes = {
     company: PropTypes.string.isRequired,
+    token: PropTypes.string,
+    user: PropTypes.object,
 };

@@ -1,157 +1,205 @@
+// src/pages/InterviewHub.jsx
+
 import React, { useState, useEffect } from "react";
 import CompanySearch from "../components/CompanySearch.jsx";
 import QuestionList from "../components/QuestionList.jsx";
 import AddExperienceModal from "../components/AddExperienceModal.jsx";
+import PropTypes from "prop-types";
 import "../css/InterviewHub.css";
+import { api } from "../api.js";
+import { FiPlusCircle, FiSearch } from "react-icons/fi";
 
-export default function InterviewHub() {
+// --- LOGO FALLBACK HELPER FUNCTIONS ---
+function stringToHslColor(str, s, l) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const h = hash % 360;
+    return `hsl(${h}, ${s}%, ${l}%)`;
+}
+
+function getInitialsAndColor(companyName) {
+    // Safety check for empty names
+    if (!companyName) return { initials: "?", color: "#ccc" };
+
+    const parts = companyName.split(/\s+/).filter(p => p.length > 0);
+    let initials = '';
+
+    if (parts.length > 1) {
+        initials = parts[0][0] + parts[1][0];
+    } else if (parts.length === 1) {
+        initials = parts[0].substring(0, 2);
+    }
+
+    initials = initials.toUpperCase();
+    const color = stringToHslColor(companyName, 50, 60);
+
+    return { initials, color };
+}
+
+// --- MAIN COMPONENT ---
+export default function InterviewHub({ isAuthed, token, user }) {
     const [selectedCompany, setSelectedCompany] = useState("");
-    const [defaultCompanies, setDefaultCompanies] = useState([]);
+    const [companies, setCompanies] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [hasResults, setHasResults] = useState(true);
-    const [isLoggedIn, setIsLoggedIn] = useState(false); // ✅ Changed to state
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+    const [searchQuery, setSearchQuery] = useState("");
+    const [logoFallbacks, setLogoFallbacks] = useState({});
 
-    // ✅ Check login status in useEffect (client-side only)
-    useEffect(() => {
-        if (typeof window !== 'undefined' && window.localStorage) {
-            const token = localStorage.getItem("token");
-            setIsLoggedIn(!!token);
-        }
-    }, []);
+    // Key used to force QuestionList to refresh its data
+    const [questionRefreshKey, setQuestionRefreshKey] = useState(0);
 
-    useEffect(() => {
-        setDefaultCompanies([
-            {
-                name: "Google",
-                logo: "https://static.cdnlogo.com/logos/g/35/google-icon.svg",
-                resources: 18,
-            },
-            {
-                name: "Spotify",
-                logo: "https://cdn.worldvectorlogo.com/logos/spotify-2.svg",
-                resources: 7,
-            },
-            {
-                name: "Microsoft",
-                logo: "https://static.cdnlogo.com/logos/m/70/microsoft.svg",
-                resources: 20,
-            },
-            {
-                name: "Adobe",
-                logo: "https://cdn.worldvectorlogo.com/logos/adobe-1.svg",
-                resources: 11,
-            },
-            {
-                name: "Uber",
-                logo: "https://cdn.worldvectorlogo.com/logos/uber-2.svg",
-                resources: 9,
-            },
-            {
-                name: "Netflix",
-                logo: "https://cdn.worldvectorlogo.com/logos/netflix-3.svg",
-                resources: 8,
-            },
-        ]);
-    }, []);
-
-
-    async function handleSubmit(formData) {
+    async function loadCompanies(search = "") {
+        setLoading(true);
+        setError("");
         try {
-            // ✅ Safe localStorage access
-            const token = typeof window !== 'undefined' && window.localStorage 
-                ? localStorage.getItem("token") 
-                : null;
-            
-            const res = await fetch("/api/questions", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`,
-                },
-                body: JSON.stringify(formData),
-            });
-            if (!res.ok) {
-                const err = await res.json();
-                throw new Error(err?.error || "Failed to submit experience");
-            }
-            alert("✅ Experience submitted successfully!");
-            setShowModal(false);
-        } catch (err) {
-            alert(err.message);
-        }
-    }
-
-
-    async function handleSearch(companyName) {
-        const normalized = companyName.trim().toLowerCase();
-        setSelectedCompany("");
-        setHasResults(true);
-
-        try {
-            const res = await fetch(
-                `/api/questions?company=${normalized}`
-            );
+            const url = search
+                ? `/api/companies?search=${encodeURIComponent(search)}`
+                : "/api/companies";
+            const res = await fetch(url);
+            if (!res.ok) throw new Error("Failed to fetch companies");
             const data = await res.json();
+            setCompanies(data || []);
+            setHasResults(data.length > 0);
 
-            if (data.length === 0) {
-                setHasResults(false);
-            } else {
-                setSelectedCompany(companyName);
-            }
+            setLogoFallbacks({});
         } catch (err) {
-            console.error("Search error:", err);
-            setHasResults(false);
+            setError(err.message || "Failed to load companies.");
+            setCompanies([]);
+        } finally {
+            setLoading(false);
         }
     }
+
+    useEffect(() => {
+        loadCompanies(searchQuery);
+    }, [searchQuery]);
+
+    const handleSubmit = async (formData) => {
+        setShowModal(false);
+        setError("");
+
+        if (!token) {
+            setError("Authentication failed. Please log in again.");
+            return;
+        }
+
+        try {
+            const res = await api.questions.create(token, formData);
+            if (res.insertedId) {
+                const newCompany = formData.company;
+
+                // Refresh list and navigate to the new company
+                loadCompanies(searchQuery);
+
+                if (newCompany === selectedCompany) {
+                    setQuestionRefreshKey(prev => prev + 1);
+                } else {
+                    setSelectedCompany(newCompany);
+                    setQuestionRefreshKey(prev => prev + 1);
+                }
+
+            } else {
+                setError(res.message || "Failed to add experience.");
+            }
+        } catch (err) {
+            setError(err.message || "Authentication failed.");
+        }
+    };
+
+    function handleSearch(query) {
+        setSearchQuery(query);
+        setSelectedCompany("");
+    }
+
+    const handleLogoError = (e, companyName) => {
+        e.target.onerror = null;
+        e.target.style.display = 'none';
+
+        const fallbackData = getInitialsAndColor(companyName);
+        setLogoFallbacks(prev => ({
+            ...prev,
+            [companyName]: fallbackData
+        }));
+    };
+
+    // 💡 HELPER: Filter out bad data (empty names) so we don't get blank boxes
+    const validCompanies = companies.filter(c => c.name && c.name.trim().length > 0);
+
+    // 💡 HELPER: If we are searching, show all matches. If not searching (Main Page), limit to 6.
+    const displayedCompanies = searchQuery ? validCompanies : validCompanies.slice(0, 6);
 
     return (
-        <div className="interview-hub container py-5">
-            {/* Header */}
-            <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-                <div>
-                    <h1 className="fw-bold mb-1">Public Interview Hub</h1>
-                    <p className="text-muted mb-0">
-                        Explore real interview experiences shared by the community
-                    </p>
-                </div>
+        <div className="container py-5">
+            <h1 className="fw-bold mb-4 text-center">Interview Hub</h1>
 
-                {isLoggedIn && (
+            {error && <div className="alert alert-danger">{error}</div>}
+
+            <CompanySearch onSearch={handleSearch} />
+
+            <div className="d-flex justify-content-center mb-4 gap-3">
+                {isAuthed ? (
                     <button
-                        className="btn btn-primary btn-lg"
+                        className="btn btn-primary d-flex align-items-center gap-2"
                         onClick={() => setShowModal(true)}
                     >
-                        + Add Experience
+                        <FiPlusCircle /> Share Your Experience
                     </button>
+                ) : (
+                    <div className="alert alert-info text-center py-2">
+                        Log in to share your interview experience!
+                    </div>
                 )}
             </div>
 
-            {/* Search Bar */}
-            <CompanySearch onSearch={handleSearch} />
+            {loading && !selectedCompany && (
+                <div className="text-center text-muted mt-5" style={{ minHeight: "40vh" }}>
+                    Loading companies...
+                </div>
+            )}
 
-            {/* Default Companies Grid */}
-            {!selectedCompany && hasResults && (
-                <div className="row g-4 mt-4">
-                    {defaultCompanies.map((c) => (
-                        <div className="col-12 col-sm-6 col-lg-4 d-flex" key={c.name}>
-                            <div className="card company-card text-center p-4 shadow-sm flex-fill">
-                                <div className="d-flex justify-content-center mb-3">
+            {!selectedCompany && validCompanies.length > 0 && !loading && (
+                <div className="company-grid">
+                    {/* 💡 RENDER: Use the filtered and sliced list */}
+                    {displayedCompanies.map((c) => (
+                        <div key={c.name} className="company-card card shadow-sm">
+                            <div className="card-body text-center">
+                                {logoFallbacks[c.name] ? (
+                                    <div
+                                        className="company-logo-initials mb-2"
+                                        style={{
+                                            backgroundColor: logoFallbacks[c.name].color,
+                                            color: '#ffffff',
+                                            fontSize: '1.25rem',
+                                            fontWeight: 'bold',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            width: '50px',
+                                            height: '50px',
+                                            borderRadius: '50%',
+                                            margin: '0 auto',
+                                        }}
+                                    >
+                                        {logoFallbacks[c.name].initials}
+                                    </div>
+                                ) : (
                                     <img
                                         src={c.logo}
                                         alt={`${c.name} logo`}
-                                        className="company-logo"
-                                        style={{
-                                            width: "60px",
-                                            height: "60px",
-                                            objectFit: "contain",
-                                        }}
+                                        className="company-logo mb-2"
+                                        style={{ width: '50px', height: '50px', borderRadius: '50%' }}
+                                        onError={(e) => handleLogoError(e, c.name)}
                                     />
-                                </div>
-                                <h5 className="fw-bold mb-1">{c.name}</h5>
-                                <p className="text-muted small mb-3">
-                                    {c.resources} interview resources
-                                </p>
+                                )}
+
+                                <h5 className="card-title fw-semibold">{c.name}</h5>
+                                <p className="card-text text-muted">{c.resourcesCount} resources</p>
                                 <button
-                                    className="btn btn-outline-primary w-100"
+                                    className="btn btn-outline-primary btn-sm mt-2"
                                     onClick={() => setSelectedCompany(c.name)}
                                 >
                                     View Resources
@@ -162,7 +210,6 @@ export default function InterviewHub() {
                 </div>
             )}
 
-            {/* Show Question List when company selected */}
             {selectedCompany && (
                 <>
                     <button
@@ -171,27 +218,23 @@ export default function InterviewHub() {
                     >
                         ← Back to Companies
                     </button>
-                    <QuestionList company={selectedCompany} />
+
+                    <QuestionList
+                        key={selectedCompany + questionRefreshKey}
+                        company={selectedCompany}
+                        token={token}
+                        user={user}
+                    />
                 </>
             )}
 
-            {/* No results found */}
-            {!hasResults && (
-                <div
-                    className="text-center text-muted mt-5"
-                    style={{
-                        minHeight: "40vh",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        fontStyle: "italic",
-                    }}
-                >
-                    No results found for your search.
+            {!hasResults && !selectedCompany && !loading && (
+                <div className="text-center text-muted mt-5" style={{ minHeight: "40vh" }}>
+                    <FiSearch size={30} className="mb-2" />
+                    <p>No results found for your search.</p>
                 </div>
             )}
 
-            {/* Modal */}
             <AddExperienceModal
                 show={showModal}
                 onClose={() => setShowModal(false)}
@@ -200,3 +243,9 @@ export default function InterviewHub() {
         </div>
     );
 }
+
+InterviewHub.propTypes = {
+    isAuthed: PropTypes.bool.isRequired,
+    token: PropTypes.string,
+    user: PropTypes.object,
+};

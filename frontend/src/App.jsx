@@ -1,5 +1,7 @@
+// src/App.jsx
+
 import { useEffect, useState } from "react";
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import Topbar from "./components/Navbar.jsx";
 import Login from "./pages/Login.jsx";
@@ -26,10 +28,32 @@ RequireAuth.propTypes = {
 };
 
 export default function App() {
+    const navigate = useNavigate();
+    // Initialize token from storage (if it exists)
     const [token, setToken] = useState(() => localStorage.getItem("token") || "");
     const [user, setUser] = useState(null);
+
+    // Convert token to boolean for easy checking
     const isAuthed = !!token;
 
+    /* ----------------------------------------------------------------
+       1. 💡 FIX: AUTO-SAVE TOKEN
+       Whenever 'token' state changes (e.g. after Login), save it to localStorage.
+       This acts as a safety net for Login.jsx.
+    ---------------------------------------------------------------- */
+    useEffect(() => {
+        if (token) {
+            localStorage.setItem("token", token);
+        } else {
+            localStorage.removeItem("token");
+            localStorage.removeItem("userEmail"); // Clean up email too
+        }
+    }, [token]);
+
+    /* ----------------------------------------------------------------
+       2. 💡 FIX: AUTO-SAVE USER EMAIL
+       When we fetch the user, save their email so we can verify ownership later.
+    ---------------------------------------------------------------- */
     useEffect(() => {
         async function loadUser() {
             if (!token) {
@@ -39,61 +63,41 @@ export default function App() {
             try {
                 const u = await api.me(token);
                 setUser(u);
+
+                // Save email for 'Edit/Delete' permission checks in other components
+                if (u && u.email) {
+                    localStorage.setItem("userEmail", u.email);
+                }
             } catch {
+                // If token is invalid, log out
                 setUser(null);
-                localStorage.removeItem("token");
                 setToken("");
+                localStorage.removeItem("token");
+                localStorage.removeItem("userEmail");
             }
         }
         loadUser();
     }, [token]);
 
-    function handleLogin(nextToken) {
-        localStorage.setItem("token", nextToken);
-        setToken(nextToken);
-    }
-
     function handleLogout() {
-        localStorage.removeItem("token");
-        localStorage.removeItem("userEmail"); // <-- remove stored email too
         setToken("");
         setUser(null);
+        navigate("/");
     }
 
     return (
-        <div
-            className="d-flex flex-column min-vh-100"
-            style={{
-                background: `
-        radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.05), transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(244, 114, 182, 0.05), transparent 50%),
-        radial-gradient(circle at 40% 80%, rgba(34, 211, 238, 0.05), transparent 50%)
-      `,
-                backgroundColor: "var(--bg-light)",
-            }}
-        >
+        <div className="d-flex flex-column min-vh-100">
             <Topbar user={user} onLogout={handleLogout} />
+
             <main className="flex-grow-1">
                 <Routes>
-                    {/* 🔹 Auth routes */}
                     <Route
                         path="/login"
-                        element={
-                            isAuthed ? (
-                                <Navigate to="/dashboard" replace />
-                            ) : (
-                                <Login onLogin={handleLogin} />
-                            )
-                        }
+                        element={<Login onLogin={setToken} />}
                     />
-                    <Route
-                        path="/register"
-                        element={
-                            isAuthed ? <Navigate to="/dashboard" replace /> : <Register />
-                        }
-                    />
+                    <Route path="/register" element={<Register />} />
 
-                    {/* 🔹 Private routes */}
+                    {/* Protected routes */}
                     <Route
                         path="/dashboard"
                         element={
@@ -119,11 +123,15 @@ export default function App() {
                         }
                     />
 
+                    {/* 3. 💡 FIX: Pass 'token' and 'user' props
+                        This ensures InterviewHub doesn't have to rely on buggy localStorage reading.
+                    */}
+                    <Route
+                        path="/interview-hub"
+                        element={<InterviewHub isAuthed={isAuthed} token={token} user={user} />}
+                    />
 
-                    {/* 🔹 Public route — your Interview Hub */}
-                    <Route path="/interview-hub" element={<InterviewHub />} />
-
-                    {/* 🔹 Default redirects */}
+                    {/* Default redirects */}
                     <Route
                         path="/"
                         element={
@@ -135,15 +143,15 @@ export default function App() {
                         }
                     />
                     <Route path="*" element={<Navigate to="/" replace />} />
+
+                    {/* If this is a standalone route, it might not need props, but usually it's a modal inside Hub */}
                     <Route
                         path="/interview-hub/add-experience"
                         element={<AddExperienceModal />}
                     />
-
                 </Routes>
             </main>
 
-            {/* Footer */}
             <footer className="mt-auto py-4 text-center bg-light border-top">
                 <div className="container">
                     <div className="d-flex align-items-center justify-content-center gap-2 mb-2">

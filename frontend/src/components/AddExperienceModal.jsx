@@ -18,16 +18,28 @@ export default function AddExperienceModal({
     });
     const [error, setError] = useState("");
 
-    
+    /* -------------------------------------------------
+        LOAD INITIAL DATA (Edit Mode)
+    -------------------------------------------------- */
     useEffect(() => {
         if (initialData) {
+            // Extract tips + difficulty if they were appended to questionDetail
+            const detail = initialData.questionDetail || "";
+
+            const extractedTips =
+                /Tips:\s*([\s\S]*)/i.exec(detail)?.[1]?.trim() || "";
+
+            const extractedDifficulty =
+                /Difficulty:\s*(Easy|Medium|Hard)/i.exec(detail)?.[1] || "";
+
             setForm({
                 company: initialData.company || "",
                 role: initialData.role || "",
                 questionTitle: initialData.questionTitle || "",
-                questionDescription: initialData.questionDescription || "",
-                difficulty: initialData.difficulty || "",
-                tips: initialData.tips || "",
+                questionDescription:
+                    initialData.questionDetail?.split("Tips:")[0]?.trim() || "",
+                difficulty: extractedDifficulty,
+                tips: extractedTips,
             });
         } else {
             setForm({
@@ -42,18 +54,33 @@ export default function AddExperienceModal({
     }, [initialData, show]);
 
     function updateField(key, value) {
-        setForm((f) => ({ ...f, [key]: value }));
+        setForm((prev) => ({ ...prev, [key]: value }));
     }
 
+    /* -------------------------------------------------
+        SUBMIT HANDLER
+        Sends backend-safe structure
+    -------------------------------------------------- */
     async function handleSubmit(e) {
         e.preventDefault();
+
         try {
-            // ✅ Safe localStorage access
-            const userEmail = typeof window !== 'undefined' && window.localStorage
-                ? localStorage.getItem("userEmail")
-                : null;
-            
-            await onSubmit({ ...form, userEmail });
+            // Combine UI fields into backend's questionDetail
+            const combinedDetail = `
+${form.questionDescription.trim()}
+
+${form.tips ? `Tips:\n${form.tips.trim()}` : ""}
+${form.difficulty ? `\nDifficulty: ${form.difficulty}` : ""}
+            `.trim();
+
+            const payload = {
+                company: form.company.trim(),
+                role: form.role.trim(),
+                questionTitle: form.questionTitle.trim(),
+                questionDetail: combinedDetail,
+            };
+
+            await onSubmit(payload);
             setError("");
             onClose();
         } catch (err) {
@@ -61,6 +88,9 @@ export default function AddExperienceModal({
         }
     }
 
+    /* -------------------------------------------------
+        RENDER
+    -------------------------------------------------- */
     return (
         <Modal
             show={show}
@@ -71,10 +101,11 @@ export default function AddExperienceModal({
             scrollable
         >
             <Form onSubmit={handleSubmit}>
-                {/* ✅ Header updates dynamically */}
                 <Modal.Header closeButton className="py-3">
                     <Modal.Title className="fw-semibold fs-5">
-                        {initialData ? "✏️ Edit Interview Experience" : "Add Interview Experience"}
+                        {initialData
+                            ? "✏️ Edit Interview Experience"
+                            : "Add Interview Experience"}
                     </Modal.Title>
                 </Modal.Header>
 
@@ -148,7 +179,10 @@ export default function AddExperienceModal({
                                     type="text"
                                     value={form.questionTitle}
                                     onChange={(e) =>
-                                        updateField("questionTitle", e.target.value)
+                                        updateField(
+                                            "questionTitle",
+                                            e.target.value
+                                        )
                                     }
                                     placeholder="e.g. Clone Graph"
                                     required
@@ -163,7 +197,10 @@ export default function AddExperienceModal({
                                     style={{ resize: "none" }}
                                     value={form.questionDescription}
                                     onChange={(e) =>
-                                        updateField("questionDescription", e.target.value)
+                                        updateField(
+                                            "questionDescription",
+                                            e.target.value
+                                        )
                                     }
                                     placeholder="Write the detailed question prompt or coding challenge..."
                                 />
@@ -172,15 +209,7 @@ export default function AddExperienceModal({
                     </Row>
                 </Modal.Body>
 
-                {/* ✅ Footer changes button label */}
-                <Modal.Footer
-                    className="d-flex justify-content-between px-4 py-3 bg-light border-top"
-                    style={{
-                        position: "sticky",
-                        bottom: 0,
-                        zIndex: 5,
-                    }}
-                >
+                <Modal.Footer className="d-flex justify-content-between px-4 py-3 bg-light border-top">
                     <Button variant="secondary" onClick={onClose}>
                         Cancel
                     </Button>
@@ -197,5 +226,5 @@ AddExperienceModal.propTypes = {
     show: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
-    initialData: PropTypes.object, // ✅ new optional prop
+    initialData: PropTypes.object,
 };
