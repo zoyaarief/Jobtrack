@@ -60,23 +60,23 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-.list-group-item.active {
-  background-color: var(--bg-white) !important;
-  border-color: var(--primary-color) !important;
-  color: var(--dark-text) !important;
+body[data-bs-theme="dark"] .list-group-item.active {
+  background-color: var(--bg-white);
+  border-color: var(--primary-color);
+  color: var(--dark-text);
   box-shadow: inset 4px 0 0 var(--primary-color);
 }
 
-.nav-pills .nav-link.active,
-.nav-pills .show > .nav-link {
-  background-color: var(--primary-color) !important;
-  color: #ffffff !important;
+body[data-bs-theme="dark"] .nav-pills .nav-link.active,
+body[data-bs-theme="dark"] .nav-pills .show>.nav-link {
+  background-color: var(--primary-color);
+  color: #ffffff;
 }
 
-.nav-link {
-  color: var(--muted-text) !important;
+body[data-bs-theme="dark"] .nav-link {
+  color: var(--muted-text);
 }
 
-.nav-link:hover {
-  color: var(--primary-color) !important;
+body[data-bs-theme="dark"] .nav-link:hover {
+  color: var(--primary-color);
 }

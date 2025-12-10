@@ -9,18 +9,31 @@
 .navbar-brand-modern {
   font-weight: 700;
   font-size: 1.25rem;
-  color: var(--dark-text) !important;
+  color: var(--dark-text);
   display: flex;
   align-items: center;
 }
 
-.nav-link {
+.navbar-modern .nav-link {
   font-weight: 500;
-  color: var(--muted-text) !important;
+  color: var(--muted-text);
   transition: color 0.2s ease;
 }
 
-.nav-link:hover,
-.nav-link.active {
-  color: var(--primary-color) !important;
+.navbar-modern .nav-link:hover,
+.navbar-modern .nav-link.active {
+  color: var(--primary-color);
+}
+
+.navbar-modern .btn-outline-primary {
+  color: #cfd8ff;
+  border-color: #8fb0ff;
+  font-weight: 600;
+}
+
+.navbar-modern .btn-outline-primary:hover,
+.navbar-modern .btn-outline-primary:focus-visible {
+  background-color: #8fb0ff;
+  color: #0b0c10;
+  border-color: #8fb0ff;
 }

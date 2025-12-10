@@ -17,9 +17,9 @@
   max-height: 75vh;
 }
 
-.list-group-item {
-  padding: 0.8rem 1rem !important;
-  border-radius: var(--radius-md) !important;
+.interview-list .list-group-item {
+  padding: 0.8rem 1rem;
+  border-radius: var(--radius-md);
   margin-bottom: 0.5rem;
   border: 1px solid transparent;
   transition: all 0.2s ease;
@@ -31,12 +31,12 @@
   background-color: #161a24;
 }
 
-.list-group-item.active .question-title {
-  color: var(--primary-color) !important;
+.interview-list .list-group-item.active .question-title {
+  color: var(--primary-color);
 }
 
-.list-group-item.active .role-label {
-  color: var(--muted-text) !important;
+.interview-list .list-group-item.active .role-label {
+  color: var(--muted-text);
 }
 
 .question-title {
@@ -153,7 +153,7 @@
   font-style: italic;
   min-height: 300px;
   text-align: center;
-  background: transparent !important;
+  background: transparent;
 }
 
 @media (max-width: 900px) {

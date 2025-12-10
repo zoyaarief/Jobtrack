@@ -41,13 +41,27 @@
 }
 
 .btn-secondary-modern {
-  background: var(--secondary-color); /* Fixed: Was pink gradient */
+  background: var(--secondary-color);
   color: white;
 }
 
 .btn-success-modern {
   background: var(--success-color);
   color: white;
+}
+
+/* Improve contrast for outline secondary buttons on dark theme */
+.btn-outline-secondary.btn-modern {
+  color: #d5d9e0;
+  border-color: #d5d9e0;
+  font-weight: 600;
+}
+
+.btn-outline-secondary.btn-modern:hover,
+.btn-outline-secondary.btn-modern:focus-visible {
+  background-color: #d5d9e0;
+  color: #11131a;
+  border-color: #d5d9e0;
 }
 
 /* Form Controls */
