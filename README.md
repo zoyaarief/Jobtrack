@@ -407,8 +407,11 @@ This project utilized generative AI tools to assist with documentation and conte
 ---
 
 **Live Demo:** [Link](https://jobtrack-hqri.onrender.com/) 
-**Video Demo:** [Link]
+
+**Video Demo:** [Link](https://youtu.be/PzY_UF84sOY)
+
 **Design Document:** [View Full Design Doc](./docs/design-document.md)
+
 **Usability Reports:**
 
 We've kept our Usability Reports separate and have linked them here:
