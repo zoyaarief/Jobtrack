@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Form, Button, Alert, Row, Col } from "react-bootstrap";
 import PropTypes from "prop-types";
+import "../css/AddExperienceModal.css";
 
 export default function AddExperienceModal({
   show,
@@ -99,9 +100,10 @@ ${form.difficulty ? `\nDifficulty: ${form.difficulty}` : ""}
       centered
       backdrop="static"
       scrollable
+      contentClassName="modal-dark"
     >
       <Form onSubmit={handleSubmit}>
-        <Modal.Header closeButton className="py-3">
+        <Modal.Header closeButton className="py-3 modal-dark-header">
           <Modal.Title className="fw-semibold fs-5">
             {initialData
               ? "✏️ Edit Interview Experience"
@@ -110,7 +112,7 @@ ${form.difficulty ? `\nDifficulty: ${form.difficulty}` : ""}
         </Modal.Header>
 
         <Modal.Body
-          className="px-4"
+          className="px-4 modal-dark-body"
           style={{ maxHeight: "70vh", overflowY: "auto" }}
         >
           {error && <Alert variant="danger">{error}</Alert>}
@@ -193,7 +195,7 @@ ${form.difficulty ? `\nDifficulty: ${form.difficulty}` : ""}
           </Row>
         </Modal.Body>
 
-        <Modal.Footer className="d-flex justify-content-between px-4 py-3 bg-light border-top">
+        <Modal.Footer className="d-flex justify-content-between px-4 py-3 modal-dark-footer">
           <Button variant="secondary" onClick={onClose}>
             Cancel
           </Button>
