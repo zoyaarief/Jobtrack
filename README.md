@@ -409,3 +409,9 @@ This project utilized generative AI tools to assist with documentation and conte
 **Live Demo:** [Coming Soon]  
 **Video Demo:** [Coming Soon]  
 **Design Document:** [View Full Design Doc](./docs/design-document.md)
+**Usability Reports:**
+
+We've kept our Usability Reports separate and have linked them here:
+
+- [Usability Report (Zoya)](https://docs.google.com/document/d/1Z1TdEmO0_Q0iyV_VxQ2kfVaT0nzKCjrXj8lEsHClEzs/edit?usp=sharing)
+- [Usability Report (Arvind)](https://docs.google.com/document/d/1OGFoG50jzCPnFn2UfGnRBAl0nQn7F4RS8cac8hxTdE4/edit?usp=sharing)

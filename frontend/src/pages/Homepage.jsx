@@ -67,7 +67,7 @@ export default function Homepage() {
                   Interview Prep
                 </Card.Title>
                 <Card.Text className="text-muted">
-                  Practice with AI-generated mock answers and access a vast
+                  Practice mock answers and access a vast
                   library of real interview questions shared by the community.
                 </Card.Text>
               </Card.Body>

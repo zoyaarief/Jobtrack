@@ -14,8 +14,6 @@ We are building JobTrack, a full-stack MERN application that serves two related 
 
 2. **Public Interview Hub:** A community-driven, anonymous "Interview Question Bank" where any user can share and browse real-world interview questions.
 
-To enhance the platform, the public hub includes an **AI "wow factor"** feature. Any user can click a button on a submitted question to receive an AI-generated mock answer, turning the hub into a powerful interactive study tool.
-
 ### Key Features:
 
 - Secure user authentication (registration, login, and sessions).
@@ -154,19 +152,17 @@ To enhance the platform, the public hub includes an **AI "wow factor"** feature.
 
 ### Story 6 (AI Feature - Zoya)
 
-**As a user viewing a question,** I want to click a "Get Mock Answer" button **so that** I can receive an AI-generated ideal answer to help me study.
+**As a user viewing a question,** I want to click a "Tips" button **so that** I can receive community suggested tips to help me study.
 
 **Acceptance Criteria:**
 
-- A "Get AI Mock Answer" button is visible on every question card.
+- A "Tips" button is visible on every question card.
 
-- Clicking the button triggers a `fetch` call to a specific backend route (e.g., `POST /api/questions/:id/ai-answer`).
+- A loading indicator is displayed while the tips are being generated.
 
-- A loading indicator is displayed while the AI response is being generated.
+- The generated tips are displayed clearly below the question.
 
-- The generated answer is displayed clearly below the question.
-
-- If the AI call fails, a user-friendly error message is shown.
+- If loading fails, a user-friendly error message is shown.
 
 ## 4. Design Mockups
 
@@ -190,3 +186,6 @@ To enhance the platform, the public hub includes an **AI "wow factor"** feature.
 ### 4.5. Public Interview Question Hub
 
 ### 4.6. Submit Question Form (Modal)
+
+
+
