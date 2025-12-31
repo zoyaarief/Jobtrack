@@ -262,6 +262,16 @@ export default function Dashboard({ token }) {
       {/* Applications Table */}
       <Card className="card-modern">
         <Card.Body className="p-0">
+          {error && (
+            <Alert
+              variant="danger"
+              role="alert"
+              aria-live="assertive"
+              className="mb-0 rounded-0"
+            >
+              {error}
+            </Alert>
+          )}
           {loading ? (
             <div className="p-5 text-center">
               <div className="spinner-border text-primary mb-3" role="status">
@@ -354,10 +364,12 @@ export default function Dashboard({ token }) {
                           <Form.Select
                             size="sm"
                             className="status-select"
+                            aria-label={`Update status for ${a.company || "application"}`}
                             value={a.status || "applied"}
                             onChange={(e) =>
                               handleStatusChange(a._id, e.target.value)
                             }
+                            aria-busy={!!statusSaving[a._id]}
                             disabled={!!statusSaving[a._id]}
                           >
                             {statusOptions.map((opt) => (

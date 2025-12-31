@@ -139,7 +139,12 @@ export default function ApplicationDetail({ token }) {
       </div>
 
       {error && (
-        <Alert variant="danger" className="error-alert">
+        <Alert
+          variant="danger"
+          className="error-alert"
+          role="alert"
+          aria-live="assertive"
+        >
           {error}
         </Alert>
       )}

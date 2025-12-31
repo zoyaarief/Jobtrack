@@ -28,6 +28,13 @@
   transform: translateY(0);
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .btn-cta-primary {
+    animation: none;
+    transition: none;
+  }
+}
+
 .table-modern {
   border-radius: var(--radius-md);
   overflow: hidden;

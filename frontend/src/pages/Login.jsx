@@ -13,6 +13,7 @@ export default function Login({ onLogin }) {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const errorId = error ? "login-error" : undefined;
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -64,7 +65,16 @@ export default function Login({ onLogin }) {
 
           <Card className="card-modern">
             <Card.Body className="p-4">
-              {error && <Alert variant="danger">{error}</Alert>}
+              {error && (
+                <Alert
+                  variant="danger"
+                  role="alert"
+                  aria-live="assertive"
+                  id="login-error"
+                >
+                  {error}
+                </Alert>
+              )}
               <Form onSubmit={handleSubmit} className="form-modern">
                 <Form.Group className="mb-3">
                   <Form.Label>Email or Username</Form.Label>
@@ -74,6 +84,7 @@ export default function Login({ onLogin }) {
                     onChange={(e) => setIdentifer(e.target.value)}
                     placeholder="e.g. jdoe or jdoe@example.com"
                     required
+                    aria-describedby={errorId}
                   />
                 </Form.Group>
                 <Form.Group className="mb-3">
@@ -83,6 +94,7 @@ export default function Login({ onLogin }) {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
+                    aria-describedby={errorId}
                   />
                 </Form.Group>
                 <Button

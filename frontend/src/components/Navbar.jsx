@@ -17,7 +17,10 @@ export default function Topbar({ user, onLogout }) {
           <FiBriefcase className="me-2" />
           JobTrack
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="main-nav" />
+        <Navbar.Toggle
+          aria-controls="main-nav"
+          aria-label="Toggle navigation menu"
+        />
         <Navbar.Collapse id="main-nav">
           <Nav className="me-auto">
             <Nav.Link as={NavLink} to="/dashboard" end>

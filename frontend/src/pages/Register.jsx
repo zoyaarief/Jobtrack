@@ -17,6 +17,9 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const errorId = error ? "register-error" : undefined;
+  const successId = success ? "register-success" : undefined;
+  const passwordTooShort = form.password.length > 0 && form.password.length < 6;
 
   function updateField(key, value) {
     setForm((f) => ({ ...f, [key]: value }));
@@ -27,7 +30,7 @@ export default function Register() {
     setError("");
     setSuccess("");
 
-    if (form.password && form.password.length < 6) {
+    if (passwordTooShort) {
       setError("Password must be at least 6 characters.");
       return;
     }
@@ -64,6 +67,9 @@ export default function Register() {
                 <Alert
                   variant="danger"
                   className="border-0"
+                  role="alert"
+                  aria-live="assertive"
+                  id="register-error"
                   style={{
                     background: "#f8d7da",
                     color: "#58151c",
@@ -76,6 +82,9 @@ export default function Register() {
                 <Alert
                   variant="success"
                   className="border-0"
+                  role="status"
+                  aria-live="polite"
+                  id="register-success"
                   style={{
                     background: "#d1e7dd",
                     color: "#0f5132",
@@ -91,6 +100,7 @@ export default function Register() {
                     value={form.firstName}
                     onChange={(e) => updateField("firstName", e.target.value)}
                     required
+                    aria-describedby={errorId || successId}
                   />
                 </div>
                 <div className="col-md-6 mb-3">
@@ -99,6 +109,7 @@ export default function Register() {
                     value={form.lastName}
                     onChange={(e) => updateField("lastName", e.target.value)}
                     required
+                    aria-describedby={errorId || successId}
                   />
                 </div>
                 <div className="col-md-6 mb-3">
@@ -107,6 +118,7 @@ export default function Register() {
                     value={form.username}
                     onChange={(e) => updateField("username", e.target.value)}
                     required
+                    aria-describedby={errorId || successId}
                   />
                 </div>
                 <div className="col-md-6 mb-3">
@@ -116,6 +128,7 @@ export default function Register() {
                     value={form.email}
                     onChange={(e) => updateField("email", e.target.value)}
                     required
+                    aria-describedby={errorId || successId}
                   />
                 </div>
                 <div className="col-12 mb-3">
@@ -125,7 +138,19 @@ export default function Register() {
                     value={form.password}
                     onChange={(e) => updateField("password", e.target.value)}
                     required
+                    aria-invalid={passwordTooShort}
+                    aria-describedby={
+                      passwordTooShort ? "password-help" : errorId || successId
+                    }
                   />
+                  <Form.Text
+                    id="password-help"
+                    muted
+                    className="d-block"
+                    aria-live="polite"
+                  >
+                    Password must be at least 6 characters.
+                  </Form.Text>
                 </div>
                 <div className="col-12">
                   <Button

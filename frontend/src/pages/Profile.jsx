@@ -9,6 +9,8 @@ export default function Profile({ token }) {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [saving, setSaving] = useState(false);
+  const errorId = error ? "profile-error" : undefined;
+  const successId = success ? "profile-success" : undefined;
 
   const [profileForm, setProfileForm] = useState({
     firstName: "",
@@ -22,6 +24,12 @@ export default function Profile({ token }) {
     newPassword: "",
     confirmPassword: "",
   });
+  const passwordMismatch =
+    passwordForm.newPassword !== "" &&
+    passwordForm.confirmPassword !== "" &&
+    passwordForm.newPassword !== passwordForm.confirmPassword;
+  const passwordTooShort =
+    passwordForm.newPassword.length > 0 && passwordForm.newPassword.length < 6;
 
   useEffect(() => {
     async function loadUser() {
@@ -120,8 +128,26 @@ export default function Profile({ token }) {
         </div>
       </div>
 
-      {error && <Alert variant="danger">{error}</Alert>}
-      {success && <Alert variant="success">{success}</Alert>}
+      {error && (
+        <Alert
+          variant="danger"
+          role="alert"
+          aria-live="assertive"
+          id="profile-error"
+        >
+          {error}
+        </Alert>
+      )}
+      {success && (
+        <Alert
+          variant="success"
+          role="status"
+          aria-live="polite"
+          id="profile-success"
+        >
+          {success}
+        </Alert>
+      )}
 
       {/* Profile Information Card */}
       <Card className="border-0 shadow-sm mb-4">
@@ -138,6 +164,7 @@ export default function Profile({ token }) {
                       updateProfileField("firstName", e.target.value)
                     }
                     required
+                    aria-describedby={errorId || successId}
                   />
                 </Form.Group>
               </Col>
@@ -150,6 +177,7 @@ export default function Profile({ token }) {
                       updateProfileField("lastName", e.target.value)
                     }
                     required
+                    aria-describedby={errorId || successId}
                   />
                 </Form.Group>
               </Col>
@@ -164,6 +192,7 @@ export default function Profile({ token }) {
                       updateProfileField("username", e.target.value)
                     }
                     required
+                    aria-describedby={errorId || successId}
                   />
                 </Form.Group>
               </Col>
@@ -177,6 +206,7 @@ export default function Profile({ token }) {
                       updateProfileField("email", e.target.value)
                     }
                     required
+                    aria-describedby={errorId || successId}
                   />
                 </Form.Group>
               </Col>
@@ -208,6 +238,7 @@ export default function Profile({ token }) {
                   updatePasswordField("currentPassword", e.target.value)
                 }
                 required
+                aria-describedby={errorId || successId}
               />
             </Form.Group>
             <Row className="g-3">
@@ -222,8 +253,14 @@ export default function Profile({ token }) {
                     }
                     required
                     minLength={6}
+                    aria-invalid={passwordMismatch || passwordTooShort}
+                    aria-describedby="new-password-help"
                   />
-                  <Form.Text className="text-muted">
+                  <Form.Text
+                    className="text-muted"
+                    id="new-password-help"
+                    aria-live="polite"
+                  >
                     At least 6 characters
                   </Form.Text>
                 </Form.Group>
@@ -239,7 +276,20 @@ export default function Profile({ token }) {
                     }
                     required
                     minLength={6}
+                    aria-invalid={passwordMismatch}
+                    aria-describedby={
+                      passwordMismatch
+                        ? "confirm-password-help"
+                        : errorId || successId
+                    }
                   />
+                  <Form.Text
+                    className="text-muted"
+                    id="confirm-password-help"
+                    aria-live="polite"
+                  >
+                    Must match the new password
+                  </Form.Text>
                 </Form.Group>
               </Col>
             </Row>
